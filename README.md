@@ -42,7 +42,7 @@ but in the **actual exhibit**, a strong UV flash is present during the reaction 
 
 ---
 
-### System Testing Update 🛠
+### System Testing Update
 
 To evaluate the high-speed capture pipeline before testing the actual polymerization reaction, we conducted a preliminary run using a simple scene  a rotating fan under dim lighting conditions.
 
