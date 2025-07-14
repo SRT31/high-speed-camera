@@ -28,7 +28,7 @@ Since the Raspberry Pi Camera Module v2 has a rolling shutter and limited frame 
 By reducing the height and increasing the analog gain, we achieved a frame rate of approximately 975 fps.  
 This allowed us to capture the entire UV-triggered reaction within a 100ms burst.
 
-The captured frames were then stored in RAM and later processed into a slow-motion video using frame-by-frame timing.
+The captured frames were then stored in RAM and later processed into a slow motion video using frame by frame timing.
 ## Frame Processing and Output
 
 We used the open-source `raspiraw` tool to capture raw Bayer frames directly from the Raspberry Pi Camera Module v2.  
@@ -42,15 +42,14 @@ but in the **actual exhibit**, a strong UV flash is present during the reaction 
 
 ---
 
-### System Testing Update️
+### System Testing Update 🛠
 
-To evaluate the high-speed capture pipeline before testing the actual polymerization reaction, we conducted a preliminary test using a simple scene — a rotating fan under dim lighting conditions.
+To evaluate the high-speed capture pipeline before testing the actual polymerization reaction, we conducted a preliminary run using a simple scene  a rotating fan under dim lighting conditions.
 
-[Click here to watch the test video](https://drive.google.com/file/d/1PzW4zkaScqAXy1D3jOnbjnEaSPEWVI3p/view)
+**[View sample capture](https://drive.google.com/file/d/1PzW4zkaScqAXy1D3jOnbjnEaSPEWVI3p/view)**
 
-The video demonstrates that the system is able to detect and respond to visual motion and brief light changes, even with minimal illumination. Although the frames appear dark, the test confirms that the capture timing and buffering logic work as intended.
+This recording confirms that the system can detect and respond to visual motion and brief light changes, even under minimal illumination. Although the frames appear dark, the capture timing and buffering logic worked as expected.
 
-Further testing will be performed with the actual UV-triggered setup to evaluate visibility and adjust lighting if necessary.
 
 ## Next Steps
 
