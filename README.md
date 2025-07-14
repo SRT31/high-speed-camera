@@ -39,6 +39,19 @@ Captured frames were converted to `.tiff` format using `dcraw`, and then compile
 Currently, the recorded frames appear **too dark** due to limited lighting during testing.  
 We are experimenting with different lighting conditions,  
 but in the **actual exhibit**, a strong UV flash is present during the reaction — so additional lighting may **not** be necessary in the final setup.
+
+---
+
+### System Testing Update️
+
+To evaluate the high-speed capture pipeline before testing the actual polymerization reaction, we conducted a preliminary test using a simple scene — a rotating fan under dim lighting conditions.
+
+[Click here to watch the test video](https://drive.google.com/file/d/1PzW4zkaScqAXy1D3jOnbjnEaSPEWVI3p/view)
+
+The video demonstrates that the system is able to detect and respond to visual motion and brief light changes, even with minimal illumination. Although the frames appear dark, the test confirms that the capture timing and buffering logic work as intended.
+
+Further testing will be performed with the actual UV-triggered setup to evaluate visibility and adjust lighting if necessary.
+
 ## Next Steps
 
 ??
