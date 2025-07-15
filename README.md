@@ -50,6 +50,28 @@ To evaluate the high-speed capture pipeline before testing the actual polymeriza
 
 This recording confirms that the system can detect and respond to visual motion and brief light changes, even under minimal illumination. Although the frames appear dark, the capture timing and buffering logic worked as expected.
 
+---
+
+### ☀Outdoor Lighting Test
+
+To verify that the camera performs well under stronger lighting conditions, we conducted an outdoor test using daylight and a stream of water as the subject. The goal was to ensure that the system reliably captures fast motion when illumination is sufficient.
+
+
+To achieve high frame rates (around 660 fps), we reduced the vertical resolution to only 64 rows using the `-h 64` flag. While this increases the capture speed significantly, it also limits the visible portion of the scene to a narrow horizontal band — similar to looking through a horizontal slit. This trade-off is essential to meet the timing requirements of fast events, but requires careful physical alignment to ensure that the subject (such as falling water) is within the visible region.
+
+#### 🎬 Sample Captures
+
+1. **[Sample 1 – Stream falling vertically](https://drive.google.com/file/d/1tkDQBM2TiiqNo0x5NmPXNWECEWIrQ5F-/view)**  
+   The water stream is clearly visible as droplets fall, even though the camera was unintentionally rotated 90 degrees.
+
+2. **[Sample 2 – Droplets hitting the ground](https://drive.google.com/file/d/1HDNrdlW91r2VxZYlnDlstKxNU1lgPaSQ/view)**  
+   After correcting the camera orientation, the main water stream was missed — likely due to imperfect horizontal alignment within the reduced frame height. However, droplets that rebounded off the ground were still captured, demonstrating motion detection even near the edges of the frame.
+
+3. **[Sample 3 – Less successful attempt](https://drive.google.com/file/d/1XEx5hrPEJuywzcE6ZUDVG6fwlSdQVgLJ/view)**  
+   This capture was less successful, but still demonstrates the system’s ability to detect fast motion. At this stage, we chose not to focus on further precision, as the results are sufficient to validate overall functionality before tuning the system for the exhibit setup.
+
+
+
 
 ## Next Steps
 
