@@ -52,7 +52,7 @@ This recording confirms that the system can detect and respond to visual motion 
 
 ---
 
-### ☀Outdoor Lighting Test
+### Outdoor Lighting Test
 
 To verify that the camera performs well under stronger lighting conditions, we conducted an outdoor test using daylight and a stream of water as the subject. The goal was to ensure that the system reliably captures fast motion when illumination is sufficient.
 
