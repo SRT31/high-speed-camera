@@ -21,57 +21,55 @@ We present a low-cost embedded system that detects the UV flash and records the 
 - **External ADC** – Converts the analog signal from the UV sensor to a digital format.
 - **HDMI Display** – Displays the slow-motion playback of the recorded footage.
 - **Physical Buttons (Play / Pause / Reset)** – Used for user interaction with playback.
+  
 ## Optimizing Capture Speed
 
-To record the fast polymerization reaction, we had to increase the camera's frame rate.  
-Since the Raspberry Pi Camera Module v2 has a rolling shutter and limited frame rate at full resolution, we minimized the image height to only 64 rows.  
-By reducing the height and increasing the analog gain, we achieved a frame rate of approximately 975 fps.  
-This allowed us to capture the entire UV-triggered reaction within a 100ms burst.
+To successfully capture the fast polymerization reaction, the system must record a short, intense event that completes in under 100 milliseconds. Standard camera configurations are inadequate for such timing, so we needed to significantly increase the camera’s frame rate.
 
-The captured frames were then stored in RAM and later processed into a slow motion video using frame by frame timing.
-## Frame Processing and Output
+The Raspberry Pi Camera Module v2 uses a **rolling shutter**, meaning it reads each frame line by line (row by row) from top to bottom, rather than capturing the entire image at once. As a result, the time it takes to capture a full frame is directly proportional to the number of rows. By reducing the **vertical resolution** (height) of the image, the camera completes each frame readout more quickly — allowing for much higher frame rates.
 
-We used the open-source `raspiraw` tool to capture raw Bayer frames directly from the Raspberry Pi Camera Module v2.  
-By minimizing the image height and optimizing sensor parameters, we achieved a frame rate of approximately **975 fps**.
+In our configuration, we reduced the image height to only 64 rows using the `-h 64` flag. This trade-off results in a narrow horizontal viewing band, but enables the camera to reach approximately 975 frames per second when combined with increased analog gain and optimized sensor parameters. Reducing the **width** of the image, on the other hand, has negligible impact on performance, since each row is still read as a unit. Therefore, vertical reduction is the most effective method for achieving high-speed capture with this sensor.
 
-Captured frames were converted to `.tiff` format using `dcraw`, and then compiled into a synchronized slow-motion video using `ffmpeg`, based on the original timestamp data.
-
-Currently, the recorded frames appear **too dark** due to limited lighting during testing.  
-We are experimenting with different lighting conditions,  
-but in the **actual exhibit**, a strong UV flash is present during the reaction — so additional lighting may **not** be necessary in the final setup.
+The resulting frames were buffered in RAM to ensure minimal write delays, and later processed into a slow-motion video using precise timing information for synchronization.
 
 ---
 
-### System Testing Update
+## Frame Processing and Output
 
-To evaluate the high-speed capture pipeline before testing the actual polymerization reaction, we conducted a preliminary run using a simple scene  a rotating fan under dim lighting conditions.
+We used the open-source `raspiraw` tool to capture raw Bayer-format frames directly from the Raspberry Pi Camera Module v2. Captured frames were converted to `.tiff` format using `dcraw`, and then compiled into a synchronized slow-motion video using `ffmpeg`, referencing the original timestamps.
+
+This pipeline allowed us to reconstruct the short, high-speed event into a temporally stretched video that reveals details not visible at normal playback speeds.
+
+Currently, the recorded frames appear dark due to limited lighting during initial testing. We are experimenting with improved lighting conditions, but expect that the final exhibit setup — which includes a strong UV flash — will provide sufficient illumination without the need for supplemental light sources.
+
+---
+
+## System Testing Update
+
+To evaluate the high-speed capture pipeline before testing the actual polymerization reaction, we conducted a preliminary run using a simple scene: a rotating fan under dim indoor lighting.
 
 **[View sample capture](https://drive.google.com/file/d/1PzW4zkaScqAXy1D3jOnbjnEaSPEWVI3p/view)**
 
-This recording confirms that the system can detect and respond to visual motion and brief light changes, even under minimal illumination. Although the frames appear dark, the capture timing and buffering logic worked as expected.
+This recording confirms that the system can detect and respond to visual motion and brief light changes, even under minimal illumination. Although the frames appear dark, the capture timing and buffering logic performed as expected.
 
 ---
 
-### Outdoor Lighting Test
+## Outdoor Lighting Test
 
-To verify that the camera performs well under stronger lighting conditions, we conducted an outdoor test using daylight and a stream of water as the subject. The goal was to ensure that the system reliably captures fast motion when illumination is sufficient.
+To verify that the camera performs well under stronger lighting conditions, we conducted an outdoor test using daylight and a stream of water as the subject. The goal was to ensure that the system reliably captures fast motion when sufficient illumination is available.
 
-To achieve high frame rates (around 660 fps), we reduced the vertical resolution to only 64 rows using the `-h 64` flag. This significantly increases the frame rate, as the Raspberry Pi Camera Module v2 uses a **rolling shutter**, which reads out the image **row by row**, rather than capturing the whole frame at once. Reducing the number of **rows** directly reduces the readout time, enabling higher capture speeds. In contrast, reducing the **width** (number of columns per row) has much less effect on performance. As a result, rotating the camera 90 degrees and reducing the height is a common technique to capture fast vertical motion like falling water.
+This test reused the same optimized capture configuration, with a vertical resolution of 64 rows and a frame rate of approximately 660 fps. Due to the limited frame height, the visible portion of the scene is reduced to a narrow horizontal band, requiring careful alignment of the subject within this region. In this case, the camera was sometimes rotated or inverted to better align the subject vertically within the reduced frame.
 
-While this configuration improves timing, it limits the visible portion of the scene to a narrow horizontal (or vertical, if rotated) band' similar to looking through a thin slit. This trade-off requires careful physical alignment to ensure that the subject is within the visible area.
-
-#### Sample Captures
+### Sample Captures
 
 1. **[Sample 1 – Stream falling vertically](https://drive.google.com/file/d/1tkDQBM2TiiqNo0x5NmPXNWECEWIrQ5F-/view)**  
-   The water stream is clearly visible as droplets fall, although the image appears upside down due to the camera being physically inverted. Despite this, the capture demonstrates that even in this orientation, the system successfully records fast vertical motion within the limited frame height.
+   The water stream is clearly visible as droplets fall, although the image appears upside down due to the camera being physically inverted. Despite this, the capture demonstrates that the system successfully records fast vertical motion within the limited frame height.
 
 2. **[Sample 2 – Droplets hitting the ground](https://drive.google.com/file/d/1HDNrdlW91r2VxZYlnDlstKxNU1lgPaSQ/view)**  
-   After correcting the camera orientation, the main water stream was missed due to imperfect horizontal alignment within the reduced frame height. However, droplets that rebounded off the ground were still captured, demonstrating motion detection even near the edges of the frame.
+   After correcting the camera orientation, the main water stream was missed due to imperfect horizontal alignment within the reduced frame height. However, droplets that rebounded off the ground were still captured, demonstrating motion detection near the frame edges.
 
 3. **[Sample 3 – Less successful attempt](https://drive.google.com/file/d/1XEx5hrPEJuywzcE6ZUDVG6fwlSdQVgLJ/view)**  
-   This capture was less successful, but still demonstrates the system’s ability to detect fast motion. At this stage, we chose not to focus on further precision, as the results are sufficient to validate overall functionality before tuning the system for the exhibit setup.
-
-
+   This capture was less successful, but still verifies the system’s ability to detect and record motion. At this stage, we chose not to further fine-tune alignment, as the results were sufficient to validate the functionality ahead of exhibit-specific testing.
 
 
 ## Next Steps
