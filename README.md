@@ -71,6 +71,48 @@ This test reused the same optimized capture configuration, with a vertical resol
 3. **[Sample 3 – Less successful attempt](https://drive.google.com/file/d/1XEx5hrPEJuywzcE6ZUDVG6fwlSdQVgLJ/view)**  
    This capture was less successful, but still verifies the system’s ability to detect and record motion. At this stage, we chose not to further fine-tune alignment, as the results were sufficient to validate the functionality ahead of exhibit-specific testing.
 
+---
+
+## Exhibit Testing – First On-Site Capture Attempts
+
+After validating the system under outdoor conditions, we conducted the first test on the actual exhibit. The goals of this session were to evaluate whether the built-in UV flash provides sufficient illumination, determine an initial camera position that captures the polymerization droplet clearly, and select a frame rate that balances motion resolution and recording duration.
+
+
+**Preliminary attempt – Width 480 (failed)**  
+We initially attempted to capture at width 480 and height 64 for 2 seconds at 660 fps  
+The system returned a memory overflow error, likely due to buffer limitations at this width and frame rate combination  
+No video was recorded  
+
+**Attempt 1 – 'first_angle' [video link](https://drive.google.com/file/d/1XnBNxm8tU3VQpRA91qte8zRlW4S25yey/view?usp=sharing)**  
+Camera placed behind the exhibit at very short distance  
+Height 64, width 320, 660 fps, duration 1.5 seconds  
+Result: extreme overexposure due to UV flash  
+Saturation begins around 0.05 seconds and persists for ~5 seconds, obscuring the droplet completely  
+
+**Attempt 2 – 'second_angle' [video link](https://drive.google.com/file/d/1Hyd2K05YBTS2U5h5Ollt0MIzkuETlodg/view?usp=drive_link)**  
+Camera repositioned to doorway, approximately 0.5 meters from the exhibit  
+Same resolution and duration as above  
+The UV flash still causes significant overexposure around 0.20 seconds  
+Droplet motion is not clearly visible  
+
+**Attempt 3 – 'position_cam' [video link](https://drive.google.com/file/d/1Hyd2K05YBTS2U5h5Ollt0MIzkuETlodg/view?usp=drive_link)**  
+Switched to 90 fps to help determine spatial framing  
+The droplet is partially visible and suggests the need to shift the camera slightly to the left and downward  
+
+**Attempt 4 – 'position_cam_2ndTry' [video link](https://drive.google.com/file/d/1h7z4Tb6kj34zj2ObndDjuNtJaOW4lgTu/view?usp=drive_link)**  
+Adjustment made based on previous framing  
+Droplet visibility improved, but further refinement is needed  
+
+**Attempt 5 – 'position_cam_3rdTry' [video link](https://drive.google.com/file/d/1QLZG5moAc6I2PqqHCZD2S2QvedE6nByG/view?usp=drive_link)**  
+Minor additional adjustments  
+Closer to correct framing but still slightly misaligned  
+
+**Final test of the day – 'heigh-64--fps-660' [video link](https://drive.google.com/file/d/1kSxTVTmyV0xH4dVVgWqpBf7O7T3rRGqm/view?usp=drive_link)**  
+Camera placement appears to be close to optimal  
+Droplet is more consistently visible and UV flash no longer overwhelms the image  
+This configuration will serve as the baseline for future refinement
+
+
 
 ## Next Steps
 
