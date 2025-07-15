@@ -58,7 +58,7 @@ To verify that the camera performs well under stronger lighting conditions, we c
 
 To achieve high frame rates (around 660 fps), we reduced the vertical resolution to only 64 rows using the `-h 64` flag. This significantly increases the frame rate, as the Raspberry Pi Camera Module v2 uses a **rolling shutter**, which reads out the image **row by row**, rather than capturing the whole frame at once. Reducing the number of **rows** directly reduces the readout time, enabling higher capture speeds. In contrast, reducing the **width** (number of columns per row) has much less effect on performance. As a result, rotating the camera 90 degrees and reducing the height is a common technique to capture fast vertical motion like falling water.
 
-While this configuration improves timing, it limits the visible portion of the scene to a narrow horizontal (or vertical, if rotated) band — similar to looking through a thin slit. This trade-off requires careful physical alignment to ensure that the subject is within the visible area.
+While this configuration improves timing, it limits the visible portion of the scene to a narrow horizontal (or vertical, if rotated) band' similar to looking through a thin slit. This trade-off requires careful physical alignment to ensure that the subject is within the visible area.
 
 #### Sample Captures
 
