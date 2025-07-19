@@ -8,7 +8,7 @@ We present a low-cost embedded system that detects the UV flash and records the 
 ## System Architecture
 
 1. A UV flash occurs, triggering a fast polymerization reaction.
-2. An analog UV sensor (GUVA-S12SD) detects the flash.
+2. An analog UV sensor detects the flash.
 3. The signal is digitized by an external ADC and read by a Raspberry Pi 3.
 4. Upon detection, the Raspberry Pi captures a high-speed burst of frames using the Raspberry Pi Camera Module v2.
 5. Frames are buffered in RAM for fast access.
