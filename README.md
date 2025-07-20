@@ -107,10 +107,15 @@ Droplet visibility improved, but further refinement is needed
 Minor additional adjustments  
 Closer to correct framing but still slightly misaligned  
 
-**Final test of the day – 'heigh-64--fps-660' [video link](https://drive.google.com/file/d/1kSxTVTmyV0xH4dVVgWqpBf7O7T3rRGqm/view?usp=drive_link)**  
+**'heigh-64--fps-660' [video link](https://drive.google.com/file/d/1kSxTVTmyV0xH4dVVgWqpBf7O7T3rRGqm/view?usp=drive_link)**  
 Camera placement appears to be close to optimal  
-Droplet is more consistently visible and UV flash no longer overwhelms the image  
-This configuration will serve as the baseline for future refinement
+Droplet is more consistently visible and the UV flash no longer overwhelms the image  
+This test served as a reference point for further adjustments 
+
+**Final test of the day – 'high-fps-final' [video link](https://drive.google.com/file/d/1PDiuaL70WirRHc-hoIIKpiJEuty05d2K/view?usp=drive_link)**  
+Same camera position as in the 660 fps test, but captured at 1000 fps to improve temporal resolution  
+Motion appears significantly smoother, with the droplet becoming visible around 0.07 seconds  
+Compared to the 660 fps version, this recording shows less choppiness and better continuity of motion.
 
 ---
 **Arduino to Raspberry Pi Trigger Interface**
