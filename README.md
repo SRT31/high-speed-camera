@@ -115,11 +115,22 @@ This configuration will serve as the baseline for future refinement
 ---
 **Arduino to Raspberry Pi Trigger Interface**
 
-To enable precise triggering of the high-speed capture process, we are planning a direct UART connection between the Arduino and the Raspberry Pi using GPIO pins. The Arduino detects the UV flash via an analog sensor (converted through an external ADC) and immediately sends a serial trigger to the Raspberry Pi to initiate video capture.
 
-Since the Arduino operates at 5V logic while the Raspberry Pi’s GPIO pins are limited to 3.3V, we are incorporating a passive voltage divider to safely step down the Arduino’s TX signal before it reaches the Pi’s RX pin. We selected two standard resistor values: 1.1 kΩ (R₁) and 2 kΩ (R₂), which yield the following output voltage:
+To ensure precise control over the start of high-speed video capture, we are planning a direct UART connection between the Arduino and the Raspberry Pi using GPIO pins. The Arduino detects the UV flash via an analog sensor (processed through an external ADC) and immediately sends a serial trigger to the Raspberry Pi to initiate recording.
 
-![Voltage Divider Formula](voltage_divider_formula.png)
+Because the Arduino operates at 5V logic while the Raspberry Pi’s GPIO pins are limited to 3.3V, we have incorporated a passive voltage divider to safely reduce the voltage level on the Arduino’s TX line before it reaches the Pi’s RX pin.
+
+The schematic of the voltage divider is shown below:
+
+<img src="voltage_divider_schematic.png" width="400"/>
+We selected two standard resistor values—1.1 kΩ (R₁) and 2 kΩ (R₂)—which yield the following output voltage:
+
+<img src="voltage_divider_formula.png" width="300"/>
+This voltage is within the safe input range for the Raspberry Pi GPIO and is well above the minimum voltage required to register a logical HIGH.
+According to the BCM2835 datasheet and technical documentation, the threshold for detecting a HIGH input is:
+
+<img src="vih_threshold.png" width="300"/>
+Thus, a signal of approximately 3.15 V provides a safety margin of over 0.8 V above the threshold, ensuring reliable logic-level detection.
 
 ## Next Steps
 
