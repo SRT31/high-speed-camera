@@ -119,7 +119,7 @@ To enable precise triggering of the high-speed capture process, we are planning 
 
 Since the Arduino operates at 5V logic while the Raspberry Pi’s GPIO pins are limited to 3.3V, we are incorporating a passive voltage divider to safely step down the Arduino’s TX signal before it reaches the Pi’s RX pin. We selected two standard resistor values: 1.1 kΩ (R₁) and 2 kΩ (R₂), which yield the following output voltage:
 
-
+![Voltage Divider Formula](voltage_divider_formula.png)
 
 ## Next Steps
 
