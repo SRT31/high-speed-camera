@@ -118,7 +118,22 @@ Motion appears significantly smoother, with the droplet becoming visible around 
 Compared to the 660 fps version, this recording shows less choppiness and better continuity of motion.
 
 ---
-**Arduino to Raspberry Pi Trigger Interface**
+
+## **Mouse Based Triggering of Video Capture**
+
+After validating the high-speed capture pipeline and obtaining promising initial results, we added functionality to trigger the recording process via a mouse click. This change streamlines operation and makes the system more suitable for interactive use during testing and future exhibit deployment.
+
+To implement this, we connected a USB mouse to the Raspberry Pi 3 and installed the necessary dependencies using apt, including evtest, python3-evdev, and ffmpeg. We then used the ls /dev/input/by-id/ command to identify the device name associated with the mouse, and confirmed the specific event path was event1. We verified this using the evtest command, which displayed real-time input events. For example, when pressing the right mouse button, we observed:
+
+Event: time 1753012817.775234, type 4 (EV_MSC), code 4 (MSC_SCAN), value 9000  
+Event: time 1753012817.775234, type 1 (EV_KEY), code 273 (BTN_RIGHT), value 1  
+Event: time 1753012817.775234, type 0 (EV_SYN), code 0 (SYN_REPORT), value 0  
+
+Based on this, we wrote a Python script named mouse_trigger.py that listens for right or middle click events and launches the video capture pipeline accordingly. We made the script executable using chmod +x mouse_trigger.py, tested it with sudo ./mouse_trigger.py, and verified that it successfully triggers the recording process when the mouse is clicked. While we intend to eventually configure the script to run automatically on boot using systemd, we have postponed this step for now in order to focus on other development priorities. The script is included in the scripts/ directory of this repository.
+
+---
+
+## **Arduino to Raspberry Pi Trigger Interface**
 
 
 To ensure precise control over the start of high-speed video capture, we are planning a direct UART connection between the Arduino and the Raspberry Pi using GPIO pins. The Arduino detects the UV flash via an analog sensor and immediately sends a serial trigger to the Raspberry Pi to initiate recording.
