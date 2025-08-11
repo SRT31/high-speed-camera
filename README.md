@@ -133,6 +133,25 @@ Based on this, we wrote a Python script named mouse_trigger.py that listens for 
 
 ---
 
+## **Prototype Assembly and Function**
+
+The current stage of the project is focused on making the existing prototype of the museum exhibit fully operational so it can serve as a testbed for the development of the high-speed camera system. This prototype, which was already built for earlier photopolymer drop demonstrations, reproduces the key functional principles of the final installation at a smaller scale. It allows us to integrate the camera with the detection, triggering, curing, and droplet control mechanisms before moving to the final exhibit build.
+
+The main goal is to ensure that every subsystem works reliably and that they integrate seamlessly into one coordinated process, from dispensing a photopolymer drop, to detecting its presence, to triggering the UV curing light precisely at the correct moment.
+
+The system consists of four main subsystems:
+
+1. **Drop Detection System**
+   
+  The drop detection unit is a custom-built sensor designed and assembled in-house at the museum specifically for this project. Its design is based on the provided schematic and uses    a dedicated light source and photodetector arranged so that a passing droplet partially blocks or scatters the beam. This creates a measurable change in the sensor output, which is    processed by conditioning electronics that filter noise, stabilize the signal, and generate a clean digital trigger.
+
+  The detection module is implemented on a compact, project-specific PCB that includes the photodetector, connectors, and all necessary passive components for stable and repeatable      operation. It interfaces directly with the control shield for real-time triggering of the curing light.
+
+  <img src="PCB_Drop_sensor_2025-07-21.png" width="500"/>
+
+2. **
+
+
 ## **Arduino to Raspberry Pi Trigger Interface**
 
 
@@ -154,20 +173,6 @@ According to the BCM2835 datasheet and technical documentation, the threshold fo
 <img src="vih_threshold.png" width="300"/>
 Thus, a signal of approximately 3.22 V provides a safety margin of over 0.9 V above the threshold, ensuring reliable logic level detection.
 
-## Prototype Assembly and Function
-The current stage of the project is focused on making the prototype fully operational so that it can serve as a testbed before the final exhibit is built. The prototype reproduces the functional principles of the final installation at a smaller scale, allowing us to verify the detection, triggering, curing, and droplet control mechanisms.
-
-The main goal is to ensure that every subsystem works reliably and that they integrate seamlessly into one coordinated process, from dispensing a photopolymer drop, to detecting its presence, to triggering the UV curing light precisely at the correct moment.
-
-The system consists of four main subsystems:
-
-1. Drop Detection System – Detects when a droplet passes through the sensor’s field of view.
-
-2. UV Curing Light System – Provides high-intensity UV illumination to polymerize the drop instantly.
-
-3. Control and Integration Shield – Central interface between the detection, curing, and motor systems.
-
-4. Stepper Motor and Peristaltic Pump – Responsible for dispensing consistent and accurately timed drops.
 
 ## Next Steps
 
