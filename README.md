@@ -154,6 +154,21 @@ According to the BCM2835 datasheet and technical documentation, the threshold fo
 <img src="vih_threshold.png" width="300"/>
 Thus, a signal of approximately 3.22 V provides a safety margin of over 0.9 V above the threshold, ensuring reliable logic level detection.
 
+## Prototype Assembly and Function
+The current stage of the project is focused on making the prototype fully operational so that it can serve as a testbed before the final exhibit is built. The prototype reproduces the functional principles of the final installation at a smaller scale, allowing us to verify the detection, triggering, curing, and droplet control mechanisms.
+
+The main goal is to ensure that every subsystem works reliably and that they integrate seamlessly into one coordinated process, from dispensing a photopolymer drop, to detecting its presence, to triggering the UV curing light precisely at the correct moment.
+
+The system consists of four main subsystems:
+
+1. Drop Detection System – Detects when a droplet passes through the sensor’s field of view.
+
+2. UV Curing Light System – Provides high-intensity UV illumination to polymerize the drop instantly.
+
+3. Control and Integration Shield – Central interface between the detection, curing, and motor systems.
+
+4. Stepper Motor and Peristaltic Pump – Responsible for dispensing consistent and accurately timed drops.
+
 ## Next Steps
 
 ??
