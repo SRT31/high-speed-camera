@@ -1,5 +1,23 @@
 # High-Speed Camera System
 An embedded system for visualizing fast UV-triggered polymerization reactions in slow motion.
+
+## Table of Contents
+- [High-Speed Camera System](#high-speed-camera-system)
+  - [Introduction](#introduction)
+  - [System Architecture](#system-architecture)
+  - [System Components](#system-components)
+  - [Optimizing Capture Speed](#optimizing-capture-speed)
+  - [Frame Processing and Output](#frame-processing-and-output)
+  - [System Testing Update](#system-testing-update)
+  - [Outdoor Lighting Test](#outdoor-lighting-test)
+    - [Sample Captures](#sample-captures)
+  - [Exhibit Testing – First On-Site Capture Attempts](#exhibit-testing--first-on-site-capture-attempts)
+  - [Mouse Based Triggering of Video Capture](#mouse-based-triggering-of-video-capture)
+  - [Prototype Assembly and Function](#prototype-assembly-and-function)
+  - [Arduino to Raspberry Pi Trigger Interface](#arduino-to-raspberry-pi-trigger-interface)
+  - [Next Steps](#next-steps)
+ 
+
 ## Introduction
 
 Fast polymerization reactions triggered by UV light occur too quickly to be captured by the human eye or standard cameras.
