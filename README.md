@@ -170,53 +170,53 @@ The system consists of four main subsystems, described below in the logical orde
 
 1. **Stepper Motor and Peristaltic Pump**  
     
-The droplet dispensing mechanism is powered by a bipolar stepper motor coupled to a peristaltic pump. This setup ensures precise droplet volume control and consistent release intervals, both of which are essential for accurate triggering and curing.
+  The droplet dispensing mechanism is powered by a bipolar stepper motor coupled to a peristaltic pump. This setup ensures precise droplet volume control and consistent release intervals, both of which are essential for accurate triggering and curing.  
 
-The stepper motor is driven by a dedicated driver controlled by the shield, allowing firmware-based adjustments to speed and timing. Mechanical alignment of the nozzle relative to the detection beam is critical; even small deviations can affect detection accuracy.
+  The stepper motor is driven by a dedicated driver controlled by the shield, allowing firmware-based adjustments to speed and timing. Mechanical alignment of the nozzle relative to the detection beam is critical; even small deviations can affect detection accuracy.
 
 
 2. **Drop Detection System**  
     
-Once the droplet is released, it passes through a custom-built optical sensor designed and assembled in-house at the museum. Based on the provided schematic, it uses a dedicated light source and photodetector arranged so that a passing droplet partially blocks or scatters the beam. This causes a measurable change in sensor output, processed by conditioning electronics to filter noise, stabilize the signal, and generate a clean digital trigger.
+  Once the droplet is released, it passes through a custom-built optical sensor designed and assembled in-house at the museum. Based on the provided schematic, it uses a dedicated light source and photodetector arranged so that a passing droplet partially blocks or scatters the beam. This causes a measurable change in sensor output, processed by conditioning electronics to filter noise, stabilize the signal, and generate a clean digital trigger.  
 
-The detection module is implemented on a compact, project-specific PCB that includes the photodetector, connectors, and all required passive components for stable and repeatable operation. It interfaces directly with the control shield for real-time triggering of the curing light.
+  The detection module is implemented on a compact, project-specific PCB that includes the photodetector, connectors, and all required passive components for stable and repeatable operation. It interfaces directly with the control shield for real-time triggering of the curing light.  
 
-Schematic, Drop Sensor  
-<img src="Schematic_Drop_sensor_2025-07-21.png" width="500"/>  
+  *Schematic, Drop Sensor*  
+  <img src="Schematic_Drop_sensor_2025-07-21.png" width="500"/>  
 
-PCB Layout, Drop Sensor  
-<img src="PCB_PCB_Drop_sensor_2_2025-07-21.png" width="500"/>  
+  *PCB Layout, Drop Sensor*  
+  <img src="PCB_PCB_Drop_sensor_2_2025-07-21.png" width="500"/>  
 
 
 
 3. **Control and Integration Shield**  
     
-Acting as the central hub, the custom control shield mounted on an Arduino-based microcontroller manages all electrical connections, signal routing, and power distribution.
+  Acting as the central hub, the custom control shield mounted on an Arduino-based microcontroller manages all electrical connections, signal routing, and power distribution.  
 
-It receives the trigger from the detection system, sends activation signals to the UV curing light, and controls the stepper motor driver for droplet dispensing. During testing, it also allows flexible reconfiguration of timing parameters and operational modes.
+  It receives the trigger from the detection system, sends activation signals to the UV curing light, and controls the stepper motor driver for droplet dispensing. During testing, it also allows flexible reconfiguration of timing parameters and operational modes.  
 
-Schematic, Control Shield  
-<img src="Schematic_Shield_Amir_ELAD_V_0_0_2023-11-08.png" width="500"/>  
+  *Schematic, Control Shield*  
+  <img src="Schematic_Shield_Amir_ELAD_V_0_0_2023-11-08.png" width="500"/>  
 
-PCB Layout, Control Shield  
-<img src="PCB_PCB_Shield_Amir_ELAD_V_0_0_2025-07-21.png" width="500"/>  
+  *PCB Layout, Control Shield*  
+  <img src="PCB_PCB_Shield_Amir_ELAD_V_0_0_2025-07-21.png" width="500"/>  
 
-Electronic dashboard of the control system – This panel contains all the necessary connections for the stepper motor, UV LEDs, sensor, and control buttons, as well as potentiometers for setting drop number, drop rate, and curing time. The OLED display provides real-time status information, enabling quick configuration during tests.
-<img src="Electronic_dashboard.png" width="500"/>  
+  Electronic dashboard of the control system – This panel contains all the necessary connections for the stepper motor, UV LEDs, sensor, and control buttons, as well as potentiometers for setting drop number, drop rate, and curing time. The OLED display provides real-time status information, enabling quick configuration during tests.  
+  <img src="Electronic_dashboard.png" width="500"/>  
 
 
 
 4. **UV Curing Light System**  
     
-Triggered by the control shield, the UV curing subsystem consists of a custom high-power UV LED module, also designed and assembled in-house. The LED array is driven by a dedicated circuit that provides stable current and precise timing control.
+  Triggered by the control shield, the UV curing subsystem consists of a custom high-power UV LED module, also designed and assembled in-house. The LED array is driven by a dedicated circuit that provides stable current and precise timing control.  
 
-The curing wavelength is matched to the photopolymer’s requirements to ensure rapid solidification. Pulse duration is tightly controlled — too short results in incomplete curing, while too long could negatively affect visual quality.
+  The curing wavelength is matched to the photopolymer’s requirements to ensure rapid solidification. Pulse duration is tightly controlled — too short results in incomplete curing, while too long could negatively affect visual quality.  
 
-Schematic, UV Curing Light  
-<img src="Schematic_PHOTOPOLYMER_CURE_LIGHT_V0_0_2025.png" width="500"/>  
+  *Schematic, UV Curing Light*  
+  <img src="Schematic_PHOTOPOLYMER_CURE_LIGHT_V0_0_2025.png" width="500"/>  
 
-PCB Layout, UV Curing Light  
-<img src="PCB_PCB_PHOTOPOLYMER_CURE_LIGHT_V0_0_2025-07-21.png" width="500"/>  
+  *PCB Layout, UV Curing Light*  
+  <img src="PCB_PCB_PHOTOPOLYMER_CURE_LIGHT_V0_0_2025-07-21.png" width="500"/>  
 
 
 
