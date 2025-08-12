@@ -157,22 +157,22 @@ The following images, taken from the museum’s official documentation, show the
 
 When the exhibit is activated, a droplet of photopolymer material is released from the liquid container by the stepper motor and peristaltic pump mechanism. As the droplet passes through the optical sensor, the sensor detects it and immediately triggers the UV curing lights. When the droplet enters the illuminated area, the polymerization process begins, solidifying the droplet in real time.
 
-Bottom section of the exhibit – Collection base and guiding elements  
-<img src="bottom_part.png" width="500"/>  
+*Upper section, Liquid container and droplet dispensing mechanism*  
+<img src="the_liquid_container.png" width="500"/>  
 
-Central section – Optical sensor, UV LED curing module, and stepper motor mechanism  
+*Central section, Optical sensor, UV LED curing module, and stepper motor mechanism*  
 <img src="the_center_of_the_device.png" width="500"/>  
 
-Upper section – Liquid container and droplet dispensing mechanism  
-<img src="the_liquid_container.png" width="500"/>  
+*Bottom section of the exhibit, Collection base and guiding elements*  
+<img src="bottom_part.png" width="500"/>  
 
 The system consists of four main subsystems, described below in the logical order of operation:
 
-1. **Stepper Motor and Peristaltic Pump**  
-    
-  The droplet dispensing mechanism is powered by a bipolar stepper motor coupled to a peristaltic pump. This setup ensures precise droplet volume control and consistent release intervals, both of which are essential for accurate triggering and curing.  
+1. **Stepper Motor and Peristaltic Pump**
+   
+   The droplet dispensing mechanism is powered by a bipolar stepper motor coupled to a peristaltic pump. This setup ensures precise droplet volume control and consistent release intervals, both of which are essential for accurate triggering and curing.  
 
-  The stepper motor is driven by a dedicated driver controlled by the shield, allowing firmware-based adjustments to speed and timing. Mechanical alignment of the nozzle relative to the detection beam is critical; even small deviations can affect detection accuracy.
+   The stepper motor is driven by a dedicated driver controlled by the shield, allowing firmware-based adjustments to speed and timing. Mechanical alignment of the nozzle relative to the detection beam is critical; even small deviations can affect detection accuracy.
 
 
 2. **Drop Detection System**  
