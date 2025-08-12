@@ -171,43 +171,33 @@ The system consists of four main subsystems:
     <img src="PCB_PCB_Drop_sensor_2_2025-07-21.png" width="500"/>  
     
 
+2. **UV Curing Light System**  
+    Once a droplet is detected, the system must trigger the curing light with minimal delay. The UV curing subsystem consists of a custom high power UV LED module, also designed and assembled in house. The LED array is driven by a dedicated circuit that provides a stable current and precise timing control.
 
-2. **UV Curing Light System**
-   
-  Once a droplet is detected, the system must trigger the curing light with minimal delay. The UV curing subsystem consists of a custom high power UV LED module, also designed and assembled in house. The LED array is driven by a dedicated circuit that provides a stable current and precise timing control.
+    The curing wavelength is matched to the photopolymer’s requirements, ensuring rapid solidification. Pulse duration is carefully controlled, too short and the curing will be incomplete, too long and it could negatively affect the visual quality of the demonstration.
 
-  The curing wavelength is matched to the photopolymer’s requirements, ensuring rapid solidification. Pulse duration is carefully controlled,  too short and the curing will be incomplete, too long and it could negatively affect the visual quality of the demonstration.
+    *Schematic, UV Curing Light*  
+    <img src="Schematic_PHOTOPOLYMER_CURE_LIGHT_V0_0_2025.png" width="500"/>  
+    
+    *PCB Layout, UV Curing Light*  
+    <img src="PCB_PCB_PHOTOPOLYMER_CURE_LIGHT_V0_0_2025-07-21.png" width="500"/>  
 
-<figure>
-  <img src="Schematic_PHOTOPOLYMER_CURE_LIGHT_V0_0_2025.png" width="500"/>
-  <figcaption>Schematic, UV Curing Light</figcaption>
-</figure>
+3. **Control and Integration Shield**  
+    At the core of the system is a custom control shield that mounts on an Arduino based microcontroller. This shield acts as the central hub for all electrical connections, signal routing, and power management.
 
-<figure>
-  <img src="PCB_PCB_PHOTOPOLYMER_CURE_LIGHT_V0_0_2025-07-21.png" width="500"/>
-  <figcaption>PCB Layout, UV Curing Light</figcaption>
-</figure>
+    It receives the digital trigger from the drop detection system, sends the activation signal to the UV curing light, and controls the stepper motor driver for droplet dispensing. It also allows for flexible configuration during testing, enabling quick changes to timing parameters and operational modes.
 
-3. **Control and Integration Shield**
+    *Schematic, Control Shield*  
+    <img src="Schematic_Shield_Amir_ELAD_V_0_0_2023-11-08.png" width="500"/>  
+    
+    *PCB Layout, Control Shield*  
+    <img src="PCB_PCB_Shield_Amir_ELAD_V_0_0_2025-07-21.png" width="500"/>  
 
-   At the core of the system is a custom control shield that mounts on an Arduino based microcontroller. This shield acts as the central hub for all electrical connections, signal routing, and power management.
+4. **Stepper Motor and Peristaltic Pump**  
+    The droplet dispensing mechanism is powered by a bipolar stepper motor coupled to a peristaltic pump. This setup ensures precise droplet volume control and consistent release intervals, both of which are essential for accurate triggering and curing.
 
-  It receives the digital trigger from the drop detection system, sends the activation signal to the UV curing light, and controls the stepper motor driver for droplet dispensing. It also allows for flexible configuration during testing, enabling quick changes to timing parameters and operational modes.
+    The stepper motor is driven by a dedicated driver controlled by the shield, allowing the firmware to adjust speed and timing parameters. Mechanical alignment of the nozzle relative to the detection beam is critical, even small deviations can affect detection accuracy.
 
-<figure>
-  <img src="Schematic_Shield_Amir_ELAD_V_0_0_2023-11-08.png" width="500"/>
-  <figcaption>Schematic, Control Shield</figcaption>
-</figure>
-
-<figure>
-  <img src="PCB_PCB_Shield_Amir_ELAD_V_0_0_2025-07-21.png" width="500"/>
-  <figcaption>PCB Layout, Control Shield</figcaption>
-</figure>
-
-4. **Stepper Motor and Peristaltic Pump**
-   The droplet dispensing mechanism is powered by a bipolar stepper motor coupled to a peristaltic pump. This setup ensures precise droplet volume control and consistent release intervals, both of which are essential for accurate triggering and curing.
-
-  The stepper motor is driven by a dedicated driver controlled by the shield, allowing the firmware to adjust speed and timing parameters. Mechanical alignment of the nozzle relative to the detection beam is critical, even small deviations can affect detection accuracy.
 
 
 
