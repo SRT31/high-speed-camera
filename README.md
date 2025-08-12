@@ -157,14 +157,14 @@ The following images, taken from the museum’s official documentation, show the
 
 When the exhibit is activated, a droplet of photopolymer material is released from the liquid container by the stepper motor and peristaltic pump mechanism. As the droplet passes through the optical sensor, the sensor detects it and immediately triggers the UV curing lights. When the droplet enters the illuminated area, the polymerization process begins, solidifying the droplet in real time.
 
-Bottom section of the exhibit – Collection base and guiding elements
-<img src="bottom_part.png" width="500"/>
+Bottom section of the exhibit – Collection base and guiding elements  
+<img src="bottom_part.png" width="500"/>  
 
-Central section – Optical sensor, UV LED curing module, and stepper motor mechanism
-<img src="the_center_of_the_device.png" width="500"/>
+Central section – Optical sensor, UV LED curing module, and stepper motor mechanism  
+<img src="the_center_of_the_device.png" width="500"/>  
 
-Upper section – Liquid container and droplet dispensing mechanism
-<img src="the_liquid_container.png" width="500"/>
+Upper section – Liquid container and droplet dispensing mechanism  
+<img src="the_liquid_container.png" width="500"/>  
 
 The system consists of four main subsystems, described below in the logical order of operation:
 
@@ -181,11 +181,11 @@ Once the droplet is released, it passes through a custom-built optical sensor de
 
 The detection module is implemented on a compact, project-specific PCB that includes the photodetector, connectors, and all required passive components for stable and repeatable operation. It interfaces directly with the control shield for real-time triggering of the curing light.
 
-Schematic, Drop Sensor
-<img src="Schematic_Drop_sensor_2025-07-21.png" width="500"/>
+Schematic, Drop Sensor  
+<img src="Schematic_Drop_sensor_2025-07-21.png" width="500"/>  
 
-PCB Layout, Drop Sensor
-<img src="PCB_PCB_Drop_sensor_2_2025-07-21.png" width="500"/>
+PCB Layout, Drop Sensor  
+<img src="PCB_PCB_Drop_sensor_2_2025-07-21.png" width="500"/>  
 
 
 
@@ -195,14 +195,14 @@ Acting as the central hub, the custom control shield mounted on an Arduino-based
 
 It receives the trigger from the detection system, sends activation signals to the UV curing light, and controls the stepper motor driver for droplet dispensing. During testing, it also allows flexible reconfiguration of timing parameters and operational modes.
 
-Schematic, Control Shield
-<img src="Schematic_Shield_Amir_ELAD_V_0_0_2023-11-08.png" width="500"/>
+Schematic, Control Shield  
+<img src="Schematic_Shield_Amir_ELAD_V_0_0_2023-11-08.png" width="500"/>  
 
-PCB Layout, Control Shield
-<img src="PCB_PCB_Shield_Amir_ELAD_V_0_0_2025-07-21.png" width="500"/>
+PCB Layout, Control Shield  
+<img src="PCB_PCB_Shield_Amir_ELAD_V_0_0_2025-07-21.png" width="500"/>  
 
 Electronic dashboard of the control system – This panel contains all the necessary connections for the stepper motor, UV LEDs, sensor, and control buttons, as well as potentiometers for setting drop number, drop rate, and curing time. The OLED display provides real-time status information, enabling quick configuration during tests.
-<img src="Electronic_dashboard.png" width="500"/>
+<img src="Electronic_dashboard.png" width="500"/>  
 
 
 
@@ -212,11 +212,11 @@ Triggered by the control shield, the UV curing subsystem consists of a custom hi
 
 The curing wavelength is matched to the photopolymer’s requirements to ensure rapid solidification. Pulse duration is tightly controlled — too short results in incomplete curing, while too long could negatively affect visual quality.
 
-Schematic, UV Curing Light
-<img src="Schematic_PHOTOPOLYMER_CURE_LIGHT_V0_0_2025.png" width="500"/>
+Schematic, UV Curing Light  
+<img src="Schematic_PHOTOPOLYMER_CURE_LIGHT_V0_0_2025.png" width="500"/>  
 
-PCB Layout, UV Curing Light
-<img src="PCB_PCB_PHOTOPOLYMER_CURE_LIGHT_V0_0_2025-07-21.png" width="500"/>
+PCB Layout, UV Curing Light  
+<img src="PCB_PCB_PHOTOPOLYMER_CURE_LIGHT_V0_0_2025-07-21.png" width="500"/>  
 
 
 
