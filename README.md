@@ -164,15 +164,11 @@ The system consists of four main subsystems:
 
     The detection module is implemented on a compact, project specific PCB that includes the photodetector, connectors, and all necessary passive components for stable and repeatable operation. It interfaces directly with the control shield for real time triggering of the curing light.
 
-    <figure>
-      <img src="Schematic_Drop_sensor_2025-07-21.png" width="500"/>
-      <figcaption>Schematic, Drop Sensor</figcaption>
-    </figure>
+    ![Schematic, Drop Sensor](Schematic_Drop_sensor_2025-07-21.png)  
+    *Schematic, Drop Sensor*
 
-    <figure>
-      <img src="PCB_PCB_Drop_sensor_2_2025-07-21.png" width="500"/>
-      <figcaption>PCB Layout, Drop Sensor</figcaption>
-    </figure>
+    ![PCB Layout, Drop Sensor](PCB_PCB_Drop_sensor_2_2025-07-21.png)  
+    *PCB Layout, Drop Sensor*
 
 
 2. **UV Curing Light System**
