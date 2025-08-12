@@ -153,6 +153,9 @@ Based on this, we wrote a Python script named mouse_trigger.py that listens for 
 
 ## Prototype Assembly and Function
 
+
+At this stage of the project, our objective is to make the exhibit prototype fully operational so that we can integrate our high speed camera system onto it for testing and further development. Using the prototype allows us to perform controlled experiments, evaluate camera performance under realistic operating conditions, and refine both hardware and software before integrating the finalized camera into the actual museum exhibit.
+
 The following images, taken from the museum’s official documentation, show the main components of the exhibit prototype and illustrate its operating sequence.
 
 When the exhibit is activated, a droplet of photopolymer material is released from the liquid container by the stepper motor and peristaltic pump mechanism. As the droplet passes through the optical sensor, the sensor detects it and immediately triggers the UV curing lights. When the droplet enters the illuminated area, the polymerization process begins, solidifying the droplet in real time.
