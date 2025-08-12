@@ -144,7 +144,7 @@ The system consists of four main subsystems:
 1.  **Drop Detection System**
     The drop detection unit is a custom-built sensor designed and assembled in house at the museum specifically for this project. Its design is based on the provided schematic and uses a dedicated light source and photodetector arranged so that a passing droplet partially blocks or scatters the beam. This creates a measurable change in the sensor output, which is processed by conditioning electronics that filter noise, stabilize the signal, and generate a clean digital trigger.
 
-The detection module is implemented on a compact, project specific PCB that includes the photodetector, connectors, and all necessary passive components for stable and repeatable operation. It interfaces directly with the control shield for real time triggering of the curing light.
+  The detection module is implemented on a compact, project specific PCB that includes the photodetector, connectors, and all necessary passive components for stable and repeatable operation. It interfaces directly with the control shield for real time triggering of the curing light.
 
 <figure>
   <img src="Schematic_Drop_sensor_2025-07-21.png" width="500"/>
@@ -158,9 +158,9 @@ The detection module is implemented on a compact, project specific PCB that incl
 
 2. **UV Curing Light System**
    
-Once a droplet is detected, the system must trigger the curing light with minimal delay. The UV curing subsystem consists of a custom high power UV LED module, also designed and assembled in house. The LED array is driven by a dedicated circuit that provides a stable current and precise timing control.
+  Once a droplet is detected, the system must trigger the curing light with minimal delay. The UV curing subsystem consists of a custom high power UV LED module, also designed and assembled in house. The LED array is driven by a dedicated circuit that provides a stable current and precise timing control.
 
-The curing wavelength is matched to the photopolymer’s requirements, ensuring rapid solidification. Pulse duration is carefully controlled,  too short and the curing will be incomplete, too long and it could negatively affect the visual quality of the demonstration.
+  The curing wavelength is matched to the photopolymer’s requirements, ensuring rapid solidification. Pulse duration is carefully controlled,  too short and the curing will be incomplete, too long and it could negatively affect the visual quality of the demonstration.
 
 <figure>
   <img src="Schematic_PHOTOPOLYMER_CURE_LIGHT_V0_0_2025.png" width="500"/>
@@ -176,7 +176,7 @@ The curing wavelength is matched to the photopolymer’s requirements, ensuring 
 
    At the core of the system is a custom control shield that mounts on an Arduino based microcontroller. This shield acts as the central hub for all electrical connections, signal routing, and power management.
 
-It receives the digital trigger from the drop detection system, sends the activation signal to the UV curing light, and controls the stepper motor driver for droplet dispensing. It also allows for flexible configuration during testing, enabling quick changes to timing parameters and operational modes.
+  It receives the digital trigger from the drop detection system, sends the activation signal to the UV curing light, and controls the stepper motor driver for droplet dispensing. It also allows for flexible configuration during testing, enabling quick changes to timing parameters and operational modes.
 
 <figure>
   <img src="Schematic_Shield_Amir_ELAD_V_0_0_2023-11-08.png" width="500"/>
@@ -191,7 +191,7 @@ It receives the digital trigger from the drop detection system, sends the activa
 4. **Stepper Motor and Peristaltic Pump**
    The droplet dispensing mechanism is powered by a bipolar stepper motor coupled to a peristaltic pump. This setup ensures precise droplet volume control and consistent release intervals, both of which are essential for accurate triggering and curing.
 
-The stepper motor is driven by a dedicated driver controlled by the shield, allowing the firmware to adjust speed and timing parameters. Mechanical alignment of the nozzle relative to the detection beam is critical, even small deviations can affect detection accuracy.
+  The stepper motor is driven by a dedicated driver controlled by the shield, allowing the firmware to adjust speed and timing parameters. Mechanical alignment of the nozzle relative to the detection beam is critical, even small deviations can affect detection accuracy.
 
 
 
