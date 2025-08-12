@@ -159,20 +159,21 @@ The main goal is to ensure that every subsystem works reliably and that they int
 
 The system consists of four main subsystems:
 
-1.  **Drop Detection System**
+1. **Drop Detection System**  
     The drop detection unit is a custom-built sensor designed and assembled in house at the museum specifically for this project. Its design is based on the provided schematic and uses a dedicated light source and photodetector arranged so that a passing droplet partially blocks or scatters the beam. This creates a measurable change in the sensor output, which is processed by conditioning electronics that filter noise, stabilize the signal, and generate a clean digital trigger.
 
-  The detection module is implemented on a compact, project specific PCB that includes the photodetector, connectors, and all necessary passive components for stable and repeatable operation. It interfaces directly with the control shield for real time triggering of the curing light.
+    The detection module is implemented on a compact, project specific PCB that includes the photodetector, connectors, and all necessary passive components for stable and repeatable operation. It interfaces directly with the control shield for real time triggering of the curing light.
 
-<figure>
-  <img src="Schematic_Drop_sensor_2025-07-21.png" width="500"/>
-  <figcaption>Schematic, Drop Sensor</figcaption>
-</figure>
+    <figure>
+      <img src="Schematic_Drop_sensor_2025-07-21.png" width="500"/>
+      <figcaption>Schematic, Drop Sensor</figcaption>
+    </figure>
 
-<figure>
-  <img src="PCB_PCB_Drop_sensor_2_2025-07-21.png" width="500"/>
-  <figcaption>PCB Layout, Drop Sensor</figcaption>
-</figure>
+    <figure>
+      <img src="PCB_PCB_Drop_sensor_2_2025-07-21.png" width="500"/>
+      <figcaption>PCB Layout, Drop Sensor</figcaption>
+    </figure>
+
 
 2. **UV Curing Light System**
    
