@@ -204,7 +204,7 @@ The system consists of four main subsystems, described below in the logical orde
    *PCB Layout, Control Shield*  
    <img src="PCB_PCB_Shield_Amir_ELAD_V_0_0_2025-07-21.png" width="500"/>  
 
-   Electronic dashboard of the control system – This panel contains all the necessary connections for the stepper motor, UV LEDs, sensor, and control buttons, as well as potentiometers for setting drop number, drop rate, and curing time. The OLED display provides real time status information, enabling quick configuration during tests.  
+   Electronic dashboard of the control systemת This panel contains all the necessary connections for the stepper motor, UV LEDs, sensor, and control buttons, as well as potentiometers for setting drop number, drop rate, and curing time. The OLED display provides real time status information, enabling quick configuration during tests.  
    <img src="Electronic_dashboard.png" width="500"/>  
 
 
