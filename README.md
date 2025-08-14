@@ -285,13 +285,21 @@ With the droplet mechanism restored, we turned our attention to the next milesto
 
 After weighing the options, we chose the second method. It offered greater timing accuracy, ensured perfect alignment between droplet detection and camera recording, and required minimal additional hardware, as the sensor was already integrated into the exhibit’s control system.
 
-## **Arduino to Raspberry Pi Trigger Interface**
+Since the UV LEDs and OLED display were not yet connected, we had no visual confirmation that the optical drop sensor was functioning. To create a temporary diagnostic method, we modified the code so that specific pins would output a high signal whenever the sensor output went lowת which should occur when a droplet passes through and blocks the beam, pulling the sensor line to 0. In the original code, the sensor input pin was defined as:
 
+#define SENSOR_IN (A0)
 
-To ensure precise control over the start of high-speed video capture, we are planning a direct UART connection between the Arduino and the Raspberry Pi using GPIO pins. The Arduino detects the UV flash via an analog sensor and immediately sends a serial trigger to the Raspberry Pi to initiate recording.
-Details about the sensor will be provided later.
+We kept the same input pin but added logic to mirror its state to another output pin for monitoring. This way, if the sensor detected a drop, the output pin could be probed or connected to an external LED for immediate feedback.
 
-Because the Arduino operates at 5V logic while the Raspberry Pi’s GPIO pins are limited to 3.3V, we have incorporated a passive voltage divider to safely reduce the voltage level on the Arduino’s TX line before it reaches the Pi’s RX pin.
+Initially, we tried reading and printing the sensor values directly to the Serial Monitor before wiring everything into the system, but no readings appeared. This led us to suspect that the sensor might be faulty. We knew from documentation that a functional sensor should illuminate its onboard LED when detecting an object, but in our case, no LED lit up. We wondered if the sensor simply couldn’t detect water, but even when we placed a finger in the beam, nothing happened.
+
+Convinced the sensor might be defective, we removed it from the system and connected it to a benchtop power supply. When powered this way, passing a hand through the beam triggered the onboard LED. However, once reinstalled in the exhibit, it again failed to detect anything. Closer inspection revealed the root cause: the wiring in the exhibit had been reversed. The wire meant for ground was connected to the positive supply, and the positive lead was connected to ground. This wiring error effectively prevented the sensor from operating at all.
+
+We disassembled the relevant section of the wiring, corrected the connections, and tested again. With the wiring fixed, the sensor reliably triggered when a hand passed through the beam. Unfortunately, when we powered on the exhibit and tested with water drops, it still did not detect them. Even after coloring the water to increase contrast, there was no detection. We then realized that the sensor’s detection zone was physically narrowת if the droplet didn’t pass exactly through this beam path, it wouldn’t register. After carefully adjusting the droplet’s alignment so it passed directly through the beam’s center, the sensor successfully triggered, confirming our suspicion and restoring its functionality.
+
+With the sensor now operating correctly, our next objective was to connect the Arduino to the Raspberry Pi so the Pi could receive a trigger signal each time a drop was detected. This would allow the Pi to start high speed video capture in perfect synchronization with the event. On the PCB, the drop sensor’s output is labeled SENSE2, but for the Pi connection we selected the unused SENSE4 interface to avoid interfering with the existing exhibit circuitry. On the Arduino side, we used pin A3 which was wired to pin 2 of SENSE4, with pin 3 as ground and pin 1 (Vin) left unconnected.
+
+Because the Arduino operates at 5-volt logic and the Raspberry Pi GPIO pins are limited to 3.3 V, we needed a safe way to reduce the voltage before sending it to the Pi. We built a passive voltage divider using resistors to bring the signal down to approximately 3.2 V
 
 The schematic of the voltage divider is shown below:
 
@@ -306,13 +314,13 @@ According to the BCM2835 datasheet and technical documentation, the threshold fo
 <img src="vih_threshold.png" width="300"/>
 Thus, a signal of approximately 3.22 V provides a safety margin of over 0.9 V above the threshold, ensuring reliable logic level detection.
 
+The divider was made from three 1 kΩ resistors, with two of them connected in series to form the equivalent of a 2 kΩ resistor. We assembled the circuit with jumper wires and heat-shrink tubing for strain relief, then connected it between the Arduino’s A3 output and the Pi’s GPIO input.
+
+Before connecting to the Pi, we verified the voltage output using a multimeter. The reading confirmed that the divider consistently produced about 3.2 V from a 5 V input, ensuring we could interface with the Pi without risk of damage. Our first attempts to solder the resistor connections led to an unexpected problem: after soldering, the multimeter measured 0 V at the output. Rather than spend excessive time diagnosing the cause, we decided to abandon soldering for this part and instead rely on solid mechanical connections with jumper wires, which immediately restored the correct voltage reading. With this in place, the Arduino could now output a clean, safe trigger signal to the Raspberry Pi whenever the sensor detected a droplet.
+
 
 ## Next Steps
 
 ??
-- Improve lighting setup or confirm sufficiency of UV flash in exhibit conditions
-- Test the system with the actual museum hardware and environment
-- Add playback control logic (Play / Pause / Reset) using physical buttons
-- Evaluate different frame processing pipelines or export options
-- Package the system in a compact, exhibition-ready form
+
 
