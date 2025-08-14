@@ -256,15 +256,15 @@ if (command == "go") {
 
 Typing stop halts all motion and processes:
 
-if (command == "stop") {
-    active_flag = false;
-    move_motor(false);
+if (command == "stop") {  
+    active_flag = false;  
+    move_motor(false);  
 }
 
 Additional commands such as help display the available commands, and status prints the current system state, including drop count, active status, and sensor readings. We also introduced a family of set commands to replace the potentiometers, allowing us to directly assign parameters like the number of drops per run, the time between drops, suspension and exposure times, and stepper speed. For example:
 
-set drnum 15  // sets drops per run to 15
-set drprt 3   // sets seconds between drops to 3
+set drnum 15  // sets drops per run to 15  
+set drprt 3   // sets seconds between drops to 3  
 
 These parameters are stored in variables already defined in the project’s header files, making them immediately usable by the existing control logic.
 
