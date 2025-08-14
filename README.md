@@ -15,7 +15,6 @@ An embedded system for visualizing fast UV-triggered polymerization reactions in
   - [Mouse Based Triggering of Video Capture](#mouse-based-triggering-of-video-capture)
   - [Prototype Assembly and Function](#prototype-assembly-and-function)
   - [Hardware Integration](#hardware-integration)
-  - [Arduino to Raspberry Pi Trigger Interface](#arduino-to-raspberry-pi-trigger-interface)
   - [Next Steps](#next-steps)
  
 
