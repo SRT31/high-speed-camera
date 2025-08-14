@@ -249,9 +249,9 @@ In the original version of the exhibit’s code, operation relied on physical co
 
 To address this, we modified the final exhibit code to replace the physical interface with a serial command interface. We implemented a simple text based protocol in which typing go into the Serial Monitor sets an internal active flag and starts the motor routine to dispense drops:
 
-if (command == "go") {
-    active_flag = true;
-    move_motor(true);
+if (command == "go") {  
+    active_flag = true;  
+    move_motor(true);  
 }
 
 Typing stop halts all motion and processes:
