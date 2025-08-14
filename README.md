@@ -270,6 +270,20 @@ These parameters are stored in variables already defined in the project’s head
 
 This serial based control method proved invaluable for prototype testing. It enabled us to quickly iterate on settings without touching the hardware, maintain precise control over the sequence of events, and focus entirely on verifying motor motion, drop detection, and system responsiveness. With these modifications in place, we had a stable and flexible foundation for integrating the high speed camera, confident that we could trigger and monitor the drop process entirely from the development environment.
 
+After finalizing the updated code and successfully uploading it to the Arduino, we were ready to test the prototype in real conditions. When we first powered the system, a few drops of photopolymer material fell through the nozzle, leftovers that had been sitting in the tubing for nearly two years. Once that residual material was depleted, the chemical reaction that normally hardens the drops was no longer relevant for our current stage, since our focus at this point was on the camera integration rather than the curing process. To keep testing, we decided to replace the photopolymer with water.
+
+After switching to water, the droplet dispensing mechanism stopped functioning entirely. Initially, we suspected an electrical issue and tested various components, but all were working as expected. We then turned to the software, modifying and testing the code, yet the problem persisted. The mechanism simply would not advance, leading us to suspect a mechanical fault or an unexpected interaction between the water and the system’s components.
+
+Eventually, we decided that we needed to look inside the exhibit itself to get to the root of the problem. Disassembling the system revealed the true cause: a small amount of photopolymer residue had remained inside the nozzle and tubing. When we introduced water, the residual polymer reacted, triggering partial polymerization inside the narrow outlet path. Over time this reaction produced a hardened blockage that completely sealed the nozzle.
+
+With the cause identified, the fix was straightforward. We replaced the liquid container, thoroughly cleaned the nozzle, and ensured that no hardened residue remained. Once reassembled, the system returned to normal operation, dispensing clean, consistent drops once again.
+
+With the droplet mechanism restored, we turned our attention to the next milestone synchronizing the operation of the exhibit with the triggering of the high speed camera. We considered two possible approaches:
+
+1. Connect to the exhibit’s start button, then apply a fixed delay (determined experimentally) before initiating camera capture.
+2. Tap into the existing optical sensor, using its detection signal to trigger the camera precisely at the moment a droplet passes through.
+
+After weighing the options, we chose the second method. It offered greater timing accuracy, ensured perfect alignment between droplet detection and camera recording, and required minimal additional hardware, as the sensor was already integrated into the exhibit’s control system.
 
 ## **Arduino to Raspberry Pi Trigger Interface**
 
