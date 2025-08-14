@@ -25,6 +25,7 @@ Fast polymerization reactions triggered by UV light occur too quickly to be capt
 We present a low-cost embedded system that detects the UV flash and records the reaction using high-speed imaging, enabling slow-motion playback for detailed observation and live demonstration.
 ## System Architecture
 
+//to do update
 1. A UV flash occurs, triggering a fast polymerization reaction.
 2. An analog UV sensor detects the flash.
 3. The signal is digitized by an external ADC and read by a Raspberry Pi 3.
@@ -33,6 +34,7 @@ We present a low-cost embedded system that detects the UV flash and records the 
 6. Playback is displayed on an HDMI screen and controlled via physical buttons (Play / Pause / Reset).
 ## System Components
 
+//to do update
 - **Raspberry Pi 5** – Responsible for capturing images and displaying playback.
 - **Raspberry Pi Camera Module v2** – Used to record high-speed frames of the reaction.
 - **GUVA-S12SD UV Sensor** – Detects the presence of UV light to signal the start of recording.
