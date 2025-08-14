@@ -336,8 +336,7 @@ With GPIO functionality verified, we connected the voltage divider output from t
 
 While the polling approach in test_signal.py worked, we recognized its limitations: it continuously checks the pin state, which is inefficient and risks missing very short pulses if the loop runs too slowly. To improve responsiveness, we implemented edge detection using the RPi.GPIO event system. This method triggers the callback immediately when GPIO 17 transitions from LOW to HIGH (rising edge), allowing the Pi to respond the moment a droplet is detected. The new script, edge_detect_signal.py, was tested and worked reliably.
 
-<img src="edge_detect_signal.png" width="1000"/>  
-
+<img src="edge_detect_signal.png" width="500"/>
 The final step was to integrate video capture. We developed one_drop_trigger_capture.py, which initiates high-speed recording as soon as the first drop is detected. Upon detection, the script executes the camera capture commands and then stops further detection to ensure only a single event is recorded per run, though this logic can be expanded later to capture multiple drops.
 
 Beginning of the capture after drop is detected:
