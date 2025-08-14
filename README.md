@@ -318,6 +318,37 @@ Thus, a signal of approximately 3.22 V provides a safety margin of over 0.9 V ab
 
 We assembled the circuit using jumper wires and heat shrink tubing for strain relief, then connected it between the Arduino’s A3 output and the Pi’s GPIO input. Before making the final connection, we verified the output with a multimeter and confirmed a consistent 3.2 V reading from a 5 V input. Our first attempts to solder the resistors into place resulted in a 0 V reading at the output, so we abandoned soldering for this part and used tight mechanical connections instead, which restored the correct voltage. With the divider working as intended, the ground lines properly connected, and the firmware changes in place, the Arduino could now output a clean, correctly- eveled trigger signal to the Raspberry Pi whenever the sensor detected a droplet.
 
+### **Testing and Integration of the Raspberry Pi Trigger Input**
+
+After assembling the voltage divider, our next step was to connect it to the Raspberry Pi. Before doing so, we wanted to confirm that the Pi’s GPIO pins, specifically GPIO 17, were functioning correctly. To verify this, we wrote a short Python script named test_input.py. The script used the RPi.GPIO library, which we installed via:
+
+sudo apt-get install python3-rpi.gpio
+
+We connected a female–male jumper wire to GPIO 17, ran the script with:
+
+python3 ./test_input.py
+
+and then briefly touched the male side of the jumper to the Pi’s 3V3 pin. The script successfully detected the voltage change, confirming that the pin was operational.
+
+With GPIO functionality verified, we connected the voltage divider output from the Arduino to the Raspberry Pi’s GPIO 17. To ensure the Pi could detect signals from the Arduino, we created another small test script called test_signal.py. This script monitored GPIO 17 for a HIGH state and printed a message when detected. Running the prototype confirmed that when the Arduino detected a droplet, the Pi also registered the event.
+
+<img src="test_signal.png" width="500"/>  
+
+While the polling approach in test_signal.py worked, we recognized its limitations: it continuously checks the pin state, which is inefficient and risks missing very short pulses if the loop runs too slowly. To improve responsiveness, we implemented edge detection using the RPi.GPIO event system. This method triggers the callback immediately when GPIO 17 transitions from LOW to HIGH (rising edge), allowing the Pi to respond the moment a droplet is detected. The new script, edge_detect_signal.py, was tested and worked reliably.
+
+<img src="edge_detect_signal.png" width="500"/>
+
+The final step was to integrate video capture. We developed one_drop_trigger_capture.py, which initiates high-speed recording as soon as the first drop is detected. Upon detection, the script executes the camera capture commands and then stops further detection to ensure only a single event is recorded per run, though this logic can be expanded later to capture multiple drops.
+
+Beginning of the capture after drop is detected:
+
+<img src="one_drop_trigger_capture.png" width="500"/>
+
+End of capture run:
+
+<img src="end.png" width="500"/>
+
+With this pipeline in place, the system can now detect a droplet via the Arduino, transmit a safely level shifted trigger to the Raspberry Pi, and initiate synchronized high speed video capture within milliseconds of detection.
 
 ## Next Steps
 
