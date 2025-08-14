@@ -241,7 +241,34 @@ Once uploaded, the onboard LED began blinking at one-second intervals, and the S
 
 <img src="Test1_res.png" width="500"/>  
 
+Once compiled and uploaded, the board responded exactly as intended—the LED pulsed at one-second intervals, and the Serial Monitor displayed the corresponding messages. This confirmed that our development environment was correctly configured and that we could reliably program and communicate with the microcontroller.
 
+With the basics in place, we moved on to the prototype hardware. We took the custom PCB designed for the exhibit and began learning soldering techniques so that we could mount the Arduino, the stepper motor driver, and the necessary connectors for both the optical drop sensor and the stepper motor. After the components were soldered and visually inspected for proper joints and alignment, we connected the key wires according to the schematic. At this stage, we decided not to connect the UV LED array we leave that part of the system offline until later in the integration process.
+
+In the original version of the exhibit’s code, operation relied on physical controls: a start push button connected to pin D3 and three potentiometers used to set the number of drops, the interval between drops, and the long cycle timing. While these controls are suitable for a final museum installation, they were not convenient for our development workflow. Adjusting hardware knobs and pressing buttons on the exhibit each time we needed to change parameters or start a test would have slowed down our iteration process. We also wanted the ability to log and adjust settings directly from the development machine while monitoring the system’s state in real time.
+
+To address this, we modified the final exhibit code to replace the physical interface with a serial command interface. We implemented a simple text based protocol in which typing go into the Serial Monitor sets an internal active flag and starts the motor routine to dispense drops:
+
+if (command == "go") {
+    active_flag = true;
+    move_motor(true);
+}
+
+Typing stop halts all motion and processes:
+
+if (command == "stop") {
+    active_flag = false;
+    move_motor(false);
+}
+
+Additional commands such as help display the available commands, and status prints the current system state, including drop count, active status, and sensor readings. We also introduced a family of set commands to replace the potentiometers, allowing us to directly assign parameters like the number of drops per run, the time between drops, suspension and exposure times, and stepper speed. For example:
+
+set drnum 15  // sets drops per run to 15
+set drprt 3   // sets seconds between drops to 3
+
+These parameters are stored in variables already defined in the project’s header files, making them immediately usable by the existing control logic.
+
+This serial based control method proved invaluable for prototype testing. It enabled us to quickly iterate on settings without touching the hardware, maintain precise control over the sequence of events, and focus entirely on verifying motor motion, drop detection, and system responsiveness. With these modifications in place, we had a stable and flexible foundation for integrating the high speed camera, confident that we could trigger and monitor the drop process entirely from the development environment.
 
 
 ## **Arduino to Raspberry Pi Trigger Interface**
