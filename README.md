@@ -14,6 +14,7 @@ An embedded system for visualizing fast UV-triggered polymerization reactions in
   - [Exhibit Testing – First On-Site Capture Attempts](#exhibit-testing--first-on-site-capture-attempts)
   - [Mouse Based Triggering of Video Capture](#mouse-based-triggering-of-video-capture)
   - [Prototype Assembly and Function](#prototype-assembly-and-function)
+  - [Hardware Integration](#hardware-integration)
   - [Arduino to Raspberry Pi Trigger Interface](#arduino-to-raspberry-pi-trigger-interface)
   - [Next Steps](#next-steps)
  
@@ -234,27 +235,11 @@ Port: /dev/cu.usbserial-10
 
 compilation and uploading worked perfectly, allowing us to proceed.
 
-Our first task was to run a basic LED blink test to confirm that our environment was set up correctly and that we could upload and execute code. The test code was simple:
+Our first task was to run a basic LED blink test to confirm that our environment was set up correctly and that we could upload and execute code. The test simply turned the onboard LED on for one second, then off for one second, while printing the LED state to the Serial Monitor.
 
-const int ledPin = 13;
+Once uploaded, the onboard LED began blinking at one-second intervals, and the Serial Monitor displayed alternating “LED ON” and “LED OFF” messages, confirming full communication between the IDE and the microcontroller.
 
-void setup() {
-  Serial.begin(9600); // Start Serial communication at 9600 baud
-  pinMode(ledPin, OUTPUT);
-  Serial.println("Starting LED Blink Test...");
-}
-
-void loop() {
-  Serial.println("LED ON");
-  digitalWrite(ledPin, HIGH); // Turn the LED on
-  delay(1000); // Wait for 1 second
-
-  Serial.println("LED OFF");
-  digitalWrite(ledPin, LOW);  // Turn the LED off
-  delay(1000); // Wait for 1 second
-}
-
-Once uploaded, the onboard LED began blinking at one-second intervals, and the Serial Monitor displayed alternating LED ON and LED OFF messages, confirming full communication between the IDE and the microcontroller.
+<img src="Test1_res.png" width="500"/>  
 
 
 
