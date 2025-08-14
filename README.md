@@ -238,11 +238,9 @@ compilation and uploading worked perfectly, allowing us to proceed.
 
 Our first task was to run a basic LED blink test to confirm that our environment was set up correctly and that we could upload and execute code. The test simply turned the onboard LED on for one second, then off for one second, while printing the LED state to the Serial Monitor.
 
-Once uploaded, the onboard LED began blinking at one-second intervals, and the Serial Monitor displayed alternating “LED ON” and “LED OFF” messages, confirming full communication between the IDE and the microcontroller.
-
 <img src="Test1_res.png" width="500"/>  
 
-Once compiled and uploaded, the board responded exactly as intended—the LED pulsed at one-second intervals, and the Serial Monitor displayed the corresponding messages. This confirmed that our development environment was correctly configured and that we could reliably program and communicate with the microcontroller.
+Once compiled and uploaded, the board responded exactly as intendedת the LED pulsed at one second intervals, and the Serial Monitor displayed the corresponding messages. This confirmed that our development environment was correctly configured and that we could reliably program and communicate with the microcontroller.
 
 With the basics in place, we moved on to the prototype hardware. We took the custom PCB designed for the exhibit and began learning soldering techniques so that we could mount the Arduino, the stepper motor driver, and the necessary connectors for both the optical drop sensor and the stepper motor. After the components were soldered and visually inspected for proper joints and alignment, we connected the key wires according to the schematic. At this stage, we decided not to connect the UV LED array we leave that part of the system offline until later in the integration process.
 
