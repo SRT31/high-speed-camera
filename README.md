@@ -296,26 +296,27 @@ Convinced the sensor might be defective, we removed it from the system and conne
 
 We disassembled the relevant section of the wiring, corrected the connections, and tested again. With the wiring fixed, the sensor reliably triggered when a hand passed through the beam. Unfortunately, when we powered on the exhibit and tested with water drops, it still did not detect them. Even after coloring the water to increase contrast, there was no detection. We then realized that the sensor’s detection zone was physically narrowת if the droplet didn’t pass exactly through this beam path, it wouldn’t register. After carefully adjusting the droplet’s alignment so it passed directly through the beam’s center, the sensor successfully triggered, confirming our suspicion and restoring its functionality.
 
-With the sensor now operating correctly, our next objective was to connect the Arduino to the Raspberry Pi so the Pi could receive a trigger signal each time a drop was detected. This would allow the Pi to start high speed video capture in perfect synchronization with the event. On the PCB, the drop sensor’s output is labeled SENSE2, but for the Pi connection we selected the unused SENSE4 interface to avoid interfering with the existing exhibit circuitry. On the Arduino side, we used pin A3 which was wired to pin 2 of SENSE4, with pin 3 as ground and pin 1 (Vin) left unconnected.
+With the sensor now operating correctly, our next objective was to connect the Arduino to the Raspberry Pi so the Pi could receive a trigger signal each time a drop was detected. This would allow the Pi to start high speed video capture in perfect synchronization with the event. On the PCB, the drop sensor’s output is labeled SENSE2, but for the Pi connection we selected the unused SENSE4 interface to avoid interfering with the existing exhibit circuitry. On the Arduino side, pin A3 was connected to pin 2 of SENSE4, with pin 3 serving as ground and pin 1 (Vin) left unconnected. The Arduino’s ground and the Raspberry Pi’s ground were also tied together to ensure a common reference.
 
-Because the Arduino operates at 5-volt logic and the Raspberry Pi GPIO pins are limited to 3.3 V, we needed a safe way to reduce the voltage before sending it to the Pi. We built a passive voltage divider using resistors to bring the signal down to approximately 3.2 V
+In the firmware, A3 was configured as an OUTPUT during setup(). The logic was updated so that whenever the sensor reading met the detection condition (SENSOR_IN <= sensor_threshold), the Arduino drove A3 HIGH, sending the trigger pulse to the Pi. Once the detection and curing process was complete, the pin was set back to LOW. This ensured that the Pi would only receive a single, clean pulse per detected drop, eliminating any chance of false triggers.
+
+Because the Arduino operates at 5 V logic and the Raspberry Pi GPIO pins are limited to 3.3 V, we needed a safe way to reduce the voltage before sending it to the Pi. We built a passive voltage divider using resistors to bring the signal down to approximately 3.2 V. The divider was constructed from three 1 kΩ resistors, with two of them connected in series to form the equivalent of a 2 kΩ resistor. This arrangement provided the desired ratio and allowed us to connect the Arduino output safely to the Pi.
 
 The schematic of the voltage divider is shown below:
 
 <img src="voltage_divider_schematic.png" width="500"/>
-We selected two standard resistor values: 1.1 kΩ for R₁ and 2 kΩ for R₂, forming a simple voltage divider, which yields the following output voltage:
 
+In theory, we selected standard resistor values of 1.1 kΩ for R₁ and 2 kΩ for R₂, forming a simple voltage divider that yields the following output voltage:
 
 <img src="voltage_divider_formula.png" width="300"/>
-This voltage is within the safe input range for the Raspberry Pi GPIO and is well above the minimum voltage required to register a logical HIGH.
-According to the BCM2835 datasheet and technical documentation, the threshold for detecting a HIGH input is:
+
+This voltage is within the safe input range for the Raspberry Pi GPIO and is well above the minimum voltage required to register a logical HIGH. According to the BCM2835 datasheet and technical documentation, the threshold for detecting a HIGH input is:
 
 <img src="vih_threshold.png" width="300"/>
-Thus, a signal of approximately 3.22 V provides a safety margin of over 0.9 V above the threshold, ensuring reliable logic level detection.
 
-The divider was made from three 1 kΩ resistors, with two of them connected in series to form the equivalent of a 2 kΩ resistor. We assembled the circuit with jumper wires and heat-shrink tubing for strain relief, then connected it between the Arduino’s A3 output and the Pi’s GPIO input.
+Thus, a signal of approximately 3.22 V provides a safety margin of over 0.9 V above the threshold, ensuring reliable logic level detection.
 
-Before connecting to the Pi, we verified the voltage output using a multimeter. The reading confirmed that the divider consistently produced about 3.2 V from a 5 V input, ensuring we could interface with the Pi without risk of damage. Our first attempts to solder the resistor connections led to an unexpected problem: after soldering, the multimeter measured 0 V at the output. Rather than spend excessive time diagnosing the cause, we decided to abandon soldering for this part and instead rely on solid mechanical connections with jumper wires, which immediately restored the correct voltage reading. With this in place, the Arduino could now output a clean, safe trigger signal to the Raspberry Pi whenever the sensor detected a droplet.
+We assembled the circuit using jumper wires and heat shrink tubing for strain relief, then connected it between the Arduino’s A3 output and the Pi’s GPIO input. Before making the final connection, we verified the output with a multimeter and confirmed a consistent 3.2 V reading from a 5 V input. Our first attempts to solder the resistors into place resulted in a 0 V reading at the output, so we abandoned soldering for this part and used tight mechanical connections instead, which restored the correct voltage. With the divider working as intended, the ground lines properly connected, and the firmware changes in place, the Arduino could now output a clean, correctly- eveled trigger signal to the Raspberry Pi whenever the sensor detected a droplet.
 
 
 ## Next Steps
