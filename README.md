@@ -222,6 +222,41 @@ The system consists of four main subsystems, described below in the logical orde
    <img src="PCB_PCB_PHOTOPOLYMER_CURE_LIGHT_V0_0_2025-07-21.png" width="500"/>  
 
 
+## **Hardware Integration**
+
+Before we could begin developing our control logic for the exhibit’s prototype, we first needed to familiarize ourselves with working on the Arduino platform. After several unsuccessful attempts to upload our first test sketch, we discovered that the issue was not with the code itself, but with the configuration in the Arduino IDE. The Board, Processor, and Port settings had to match our actual hardware in order for uploads to succeed. Once we selected:
+
+Board: Arduino Nano
+
+Processor: ATmega328P
+
+Port: /dev/cu.usbserial-10
+
+compilation and uploading worked perfectly, allowing us to proceed.
+
+Our first task was to run a basic LED blink test to confirm that our environment was set up correctly and that we could upload and execute code. The test code was simple:
+
+const int ledPin = 13;
+
+void setup() {
+  Serial.begin(9600); // Start Serial communication at 9600 baud
+  pinMode(ledPin, OUTPUT);
+  Serial.println("Starting LED Blink Test...");
+}
+
+void loop() {
+  Serial.println("LED ON");
+  digitalWrite(ledPin, HIGH); // Turn the LED on
+  delay(1000); // Wait for 1 second
+
+  Serial.println("LED OFF");
+  digitalWrite(ledPin, LOW);  // Turn the LED off
+  delay(1000); // Wait for 1 second
+}
+
+Once uploaded, the onboard LED began blinking at one-second intervals, and the Serial Monitor displayed alternating LED ON and LED OFF messages, confirming full communication between the IDE and the microcontroller.
+
+
 
 
 ## **Arduino to Raspberry Pi Trigger Interface**
