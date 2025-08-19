@@ -380,6 +380,49 @@ For the first trial, we connected the UV PCB not to the full exhibit lighting as
 
 Once this initial validation succeeded, we disconnected the test LED and instead wired the UV PCB directly to the LED rows mounted on the prototype. With the same 48 V supply applied, the larger LED assembly activated correctly, confirming that the power distribution, MOSFET control, and wiring harness all operated reliably at scale. This successful test meant the UV subsystem could now be considered fully integrated.
 
+## **Camera Synchronization Experiments**
+
+The goal of this stage was to verify that the camera was functioning properly and to determine its exact positioning so that we could improve image quality. To achieve this, we performed a series of experiments.
+
+### **First Attempt**
+
+In the first trial no video was captured at all. Our first thought was that perhaps the system itself was working, but the camera was not properly aligned and therefore failed to record the event. To test this possibility, we tried moving the camera as close as possible to the droplet path, hoping that proximity would reveal at least a faint signal. We also increased the frame height from 64 to 320 pixels. Since a frame height of 64 is quite narrow, expanding to 320 gave us a much wider field of view and a greater chance of capturing something in the frame.
+
+We recall that the camera is mounted at a 90-degree rotation, since the rolling shutter sensor reads line by line and for our application the vertical axis of the falling droplets is more critical than the horizontal dimension. By reducing the number of lines we effectively compress the axis and can capture the motion more efficiently. In this first attempt, however, even with the adjustments to resolution and positioning, no usable video was produced.
+
+To check whether the issue was related to the camera or to the Raspberry Pi itself, we performed a control test. Instead of relying on the sensor triggered script, we started the camera manually, at the exact moment we knew a droplet would fall, and recorded for a longer duration than usual to make sure the drop would be captured somewhere in the sequence. When we later reviewed the footage, we could clearly see the event. This confirmed that both the Raspberry Pi and the camera were functioning properly, and that the issue was not due to misalignment or faulty hardware. The real problem lay in the synchronization between the Arduino trigger and the Raspberry Pi capture script.
+
+**[First successful attempt](https://drive.google.com/file/d/1Ykk5Uip4b63IA97jSYBqBQ3OBTui59Sb/view?usp=drive_link))**
+
+### **Second Attempt**
+
+After several failed attempts, we eventually realized the issue. In our capture routine we had accidentally left in an I2C status check that was originally needed only once during initialization. Because it ran repeatedly inside the loop, it introduced an additional delay before the Pi started recording.
+
+This delay was enough to completely throw off synchronization, by the time recording began, the droplet had already passed through the region of interest. Since we had configured the prototype to release a new drop only every three seconds, the recording window consistently ended before the next droplet appeared. In practice, this meant that we never managed to capture the critical moment, the maximum footage we obtained was about one second with nothing useful in frame.
+
+Once we identified the mistake, we cleaned up the script by removing the repeated I2C check from the loop and also eliminated an extra delay that had been left in the Arduino code. With these corrections, synchronization immediately improved. For the first time, we produced a video that actually showed the droplet event at the correct moment, even though further fine tuning would still be needed.
+
+**[Second attempt](https://drive.google.com/file/d/1nz-HmmVeMYbKkoLe5iBu_BNrmOuvZssi/view?usp=drive_link))**
+
+### **Third Attempt**
+
+In the third trial we shifted focus to camera placement. We reduced the frame height (number of rows) to capture and experimented with camera positioning relative to the droplet path. This confirmed that the synchronization was working, but revealed that the camera alignment was incorrect, since droplets did not consistently appear within the frame.
+
+**[Third Attempt](https://drive.google.com/file/d/1fHyBt6_lvj7hkRYKEYBgoefq1-nEfLwA/view?usp=drive_link))**
+
+### **Ongoing Trials**
+
+After a series of trial and error experiments, we eventually identified a camera placement that consistently captured the droplets and provides a reliable basis for improving image quality going forward.
+
+**[Final positioning attempt](https://drive.google.com/file/d/1xlmjmXJPGok_TyZNuMyr5RXJRBlFVw0r/view?usp=drive_link))**
+
+The position is as follows:
+
+- 8 cm away from the opening
+
+- Lens center 0.5 cm from the right edge of the opening
+
+- 2 cm above the bottom of the opening
 
 ## Next Steps
 
