@@ -16,10 +16,11 @@ An embedded system for visualizing fast UV-triggered polymerization reactions in
   - [Prototype Assembly and Function](#prototype-assembly-and-function)
   - [Hardware Integration](#hardware-integration)
   - [Integrating UV Illumination into the Prototype](#integrating-UV-Illumination-into-the-prototype)
+  - [Camera Synchronization Experiments](#camera-synchronization-experiments)
   - [Next Steps](#next-steps)
  
 
-## Introduction
+## Introduction 
 
 Fast polymerization reactions triggered by UV light occur too quickly to be captured by the human eye or standard cameras.
 
@@ -392,7 +393,7 @@ We recall that the camera is mounted at a 90-degree rotation, since the rolling 
 
 To check whether the issue was related to the camera or to the Raspberry Pi itself, we performed a control test. Instead of relying on the sensor triggered script, we started the camera manually, at the exact moment we knew a droplet would fall, and recorded for a longer duration than usual to make sure the drop would be captured somewhere in the sequence. When we later reviewed the footage, we could clearly see the event. This confirmed that both the Raspberry Pi and the camera were functioning properly, and that the issue was not due to misalignment or faulty hardware. The real problem lay in the synchronization between the Arduino trigger and the Raspberry Pi capture script.
 
-**[First successful attempt](https://drive.google.com/file/d/1Ykk5Uip4b63IA97jSYBqBQ3OBTui59Sb/view?usp=drive_link))**
+**[First successful attempt](https://drive.google.com/file/d/1Ykk5Uip4b63IA97jSYBqBQ3OBTui59Sb/view?usp=drive_link)**
 
 ### **Second Attempt**
 
@@ -402,19 +403,19 @@ This delay was enough to completely throw off synchronization, by the time recor
 
 Once we identified the mistake, we cleaned up the script by removing the repeated I2C check from the loop and also eliminated an extra delay that had been left in the Arduino code. With these corrections, synchronization immediately improved. For the first time, we produced a video that actually showed the droplet event at the correct moment, even though further fine tuning would still be needed.
 
-**[Second attempt](https://drive.google.com/file/d/1nz-HmmVeMYbKkoLe5iBu_BNrmOuvZssi/view?usp=drive_link))**
+**[Second attempt](https://drive.google.com/file/d/1nz-HmmVeMYbKkoLe5iBu_BNrmOuvZssi/view?usp=drive_link)**
 
 ### **Third Attempt**
 
 In the third trial we shifted focus to camera placement. We reduced the frame height (number of rows) to capture and experimented with camera positioning relative to the droplet path. This confirmed that the synchronization was working, but revealed that the camera alignment was incorrect, since droplets did not consistently appear within the frame.
 
-**[Third Attempt](https://drive.google.com/file/d/1fHyBt6_lvj7hkRYKEYBgoefq1-nEfLwA/view?usp=drive_link))**
+**[Third Attempt](https://drive.google.com/file/d/1fHyBt6_lvj7hkRYKEYBgoefq1-nEfLwA/view?usp=drive_link)**
 
 ### **Ongoing Trials**
 
 After a series of trial and error experiments, we eventually identified a camera placement that consistently captured the droplets and provides a reliable basis for improving image quality going forward.
 
-**[Final positioning attempt](https://drive.google.com/file/d/1xlmjmXJPGok_TyZNuMyr5RXJRBlFVw0r/view?usp=drive_link))**
+**[Final positioning attempt](https://drive.google.com/file/d/1xlmjmXJPGok_TyZNuMyr5RXJRBlFVw0r/view?usp=drive_link)**
 
 The position is as follows:
 
