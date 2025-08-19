@@ -425,6 +425,18 @@ The position is as follows:
 
 - 2 cm above the bottom of the opening
 
+
+Although our earlier trials brought us close to a workable position, we later realized that the chosen spot was not viable for the actual exhibit. The installation, as shown in the image below, includes a yellow protective shield positioned in front of the droplet path. This barrier is designed to protect visitors from the strong UV, but it also makes it impossible to capture high quality footage through the shield. Any attempt to film through it would significantly degrade image clarity and distort the results.
+
+   *Exhibit with yellow UV protection shield*  
+   <img src="Exhibit.jpeg" width="500"/>  
+
+Because of this, we decided to relocate the camera behind the installation, bypassing the shield entirely. This new placement allows us to observe the droplet path directly, without the optical interference caused by the protective layer. On the prototype, we mounted the Raspberry Pi camera on the rear frame and secured the supporting electronics alongside it, as shown in the image below. The purpose of this setup is to evaluate whether the new perspective provides sufficient clarity.
+
+   *Prototype with camera repositioned behind the droplet column*  
+   <img src="after.jpeg" width="500"/>  
+
+
 ## Next Steps
 
 ??
