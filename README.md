@@ -15,6 +15,7 @@ An embedded system for visualizing fast UV-triggered polymerization reactions in
   - [Mouse Based Triggering of Video Capture](#mouse-based-triggering-of-video-capture)
   - [Prototype Assembly and Function](#prototype-assembly-and-function)
   - [Hardware Integration](#hardware-integration)
+  - [Integrating UV Illumination into the Prototype](#integrating-UV-Illumination-into-the-prototype)
   - [Next Steps](#next-steps)
  
 
@@ -206,7 +207,7 @@ The system consists of four main subsystems, described below in the logical orde
    *PCB Layout, Control Shield*  
    <img src="PCB_PCB_Shield_Amir_ELAD_V_0_0_2025-07-21.png" width="500"/>  
 
-   Electronic dashboard of the control systemת This panel contains all the necessary connections for the stepper motor, UV LEDs, sensor, and control buttons, as well as potentiometers for setting drop number, drop rate, and curing time. The OLED display provides real time status information, enabling quick configuration during tests.  
+   Electronic dashboard of the control system, This panel contains all the necessary connections for the stepper motor, UV LEDs, sensor, and control buttons, as well as potentiometers for setting drop number, drop rate, and curing time. The OLED display provides real time status information, enabling quick configuration during tests.  
    <img src="Electronic_dashboard.png" width="500"/>  
 
 
@@ -240,7 +241,7 @@ Our first task was to run a basic LED blink test to confirm that our environment
 
 <img src="Test1_res.png" width="500"/>  
 
-Once compiled and uploaded, the board responded exactly as intendedת the LED pulsed at one second intervals, and the Serial Monitor displayed the corresponding messages. This confirmed that our development environment was correctly configured and that we could reliably program and communicate with the microcontroller.
+Once compiled and uploaded, the board responded exactly as intended, the LED pulsed at one second intervals, and the Serial Monitor displayed the corresponding messages. This confirmed that our development environment was correctly configured and that we could reliably program and communicate with the microcontroller.
 
 With the basics in place, we moved on to the prototype hardware. We took the custom PCB designed for the exhibit and began learning soldering techniques so that we could mount the Arduino, the stepper motor driver, and the necessary connectors for both the optical drop sensor and the stepper motor. After the components were soldered and visually inspected for proper joints and alignment, we connected the key wires according to the schematic. At this stage, we decided not to connect the UV LED array we leave that part of the system offline until later in the integration process.
 
@@ -284,7 +285,7 @@ With the droplet mechanism restored, we turned our attention to the next milesto
 
 After weighing the options, we chose the second method. It offered greater timing accuracy, ensured perfect alignment between droplet detection and camera recording, and required minimal additional hardware, as the sensor was already integrated into the exhibit’s control system.
 
-Since the UV LEDs and OLED display were not yet connected, we had no visual confirmation that the optical drop sensor was functioning. To create a temporary diagnostic method, we modified the code so that specific pins would output a high signal whenever the sensor output went lowת which should occur when a droplet passes through and blocks the beam, pulling the sensor line to 0. In the original code, the sensor input pin was defined as:
+Since the UV LEDs and OLED display were not yet connected, we had no visual confirmation that the optical drop sensor was functioning. To create a temporary diagnostic method, we modified the code so that specific pins would output a high signal whenever the sensor output went low, which should occur when a droplet passes through and blocks the beam, pulling the sensor line to 0. In the original code, the sensor input pin was defined as:
 
 #define SENSOR_IN (A0)
 
@@ -294,7 +295,7 @@ Initially, we tried reading and printing the sensor values directly to the Seria
 
 Convinced the sensor might be defective, we removed it from the system and connected it to a benchtop power supply. When powered this way, passing a hand through the beam triggered the onboard LED. However, once reinstalled in the exhibit, it again failed to detect anything. Closer inspection revealed the root cause: the wiring in the exhibit had been reversed. The wire meant for ground was connected to the positive supply, and the positive lead was connected to ground. This wiring error effectively prevented the sensor from operating at all.
 
-We disassembled the relevant section of the wiring, corrected the connections, and tested again. With the wiring fixed, the sensor reliably triggered when a hand passed through the beam. Unfortunately, when we powered on the exhibit and tested with water drops, it still did not detect them. Even after coloring the water to increase contrast, there was no detection. We then realized that the sensor’s detection zone was physically narrowת if the droplet didn’t pass exactly through this beam path, it wouldn’t register. After carefully adjusting the droplet’s alignment so it passed directly through the beam’s center, the sensor successfully triggered, confirming our suspicion and restoring its functionality.
+We disassembled the relevant section of the wiring, corrected the connections, and tested again. With the wiring fixed, the sensor reliably triggered when a hand passed through the beam. Unfortunately, when we powered on the exhibit and tested with water drops, it still did not detect them. Even after coloring the water to increase contrast, there was no detection. We then realized that the sensor’s detection zone was physically narrow, if the droplet didn’t pass exactly through this beam path, it wouldn’t register. After carefully adjusting the droplet’s alignment so it passed directly through the beam’s center, the sensor successfully triggered, confirming our suspicion and restoring its functionality.
 
 With the sensor now operating correctly, our next objective was to connect the Arduino to the Raspberry Pi so the Pi could receive a trigger signal each time a drop was detected. This would allow the Pi to start high speed video capture in perfect synchronization with the event. On the PCB, the drop sensor’s output is labeled SENSE2, but for the Pi connection we selected the unused SENSE4 interface to avoid interfering with the existing exhibit circuitry. On the Arduino side, pin A3 was connected to pin 2 of SENSE4, with pin 3 serving as ground and pin 1 (Vin) left unconnected. The Arduino’s ground and the Raspberry Pi’s ground were also tied together to ensure a common reference.
 
@@ -348,6 +349,16 @@ End of capture run:
 <img src="end.png" width="500"/>
 
 With this pipeline in place, the system can now detect a droplet via the Arduino, transmit a safely level shifted trigger to the Raspberry Pi, and initiate synchronized high speed video capture within milliseconds of detection.
+
+## **Integrating UV Illumination into the Prototype**
+
+Up to this point, our work with the prototype has focused on bringing the mechanical, electronic, and sensing subsystems into full synchronization. We established reliable droplet dispensing, verified detection through the optical sensor, and ensured that the Arduino could communicate trigger signals directly to the Raspberry Pi for video capture. These steps allowed us to reproduce the sequence of events of the final exhibit in a controlled, testable setup.
+
+Until now, however, we had deliberately left the UV LED array disconnected. The reason was simple: integrating the curing light introduced additional complexity, both in wiring and in timing control, and it was not essential during the early stages when our priority was to validate motor motion, droplet detection, and communication with the Pi. Just as importantly, the UV subsystem operates at 48 V, which makes it far more dangerous to handle compared to the low voltage electronics we had been working with up to this point. Since we ran the prototype many times in the course of testing and troubleshooting, we wanted to avoid any unnecessary risk of damaging components or creating unsafe operating conditions. For these reasons, we chose to postpone activating the UV array until the rest of the system was proven stable.
+
+With those foundations now in place, and with the prototype functioning reliably in repeated runs, the time has come to safely integrate and synchronize the UV system as well.
+
+This step is important because our current experiments aim to replicate the original exhibit’s operating conditions as closely as possible. The high speed camera will ultimately need to perform under those same conditions, and without the UV lighting the visual characteristics of the droplets in motion cannot be fully representative. By bringing the UV subsystem online and aligning its activation with the droplet detection events, we can ensure that the prototype now behaves as a faithful miniature of the final installation, providing us with realistic test data for refining our camera capture methods.
 
 ## Next Steps
 
