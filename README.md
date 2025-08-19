@@ -433,6 +433,8 @@ Although our earlier trials brought us close to a workable position, we later re
 
 Because of this, we decided to relocate the camera behind the installation, bypassing the shield entirely. This new placement allows us to observe the droplet path directly, without the optical interference caused by the protective layer. On the prototype, we mounted the Raspberry Pi camera on the rear frame and secured the supporting electronics alongside it, as shown in the image below. The purpose of this setup is to evaluate whether the new perspective provides sufficient clarity.
 
+However, this rear placement introduces a new challenge, the camera is now much closer to the droplet column than before. As a result, we will need to reconfigure its settings such as focal length, frame height, and exposure parameters to adapt to the reduced distance. At the same time, we decided to keep the previous distance measurements documented, so that if needed we can reconfigure the camera back to its earlier position.
+
    *Prototype with camera repositioned behind the droplet column*  
    <img src="after.jpeg" width="500"/>  
 
