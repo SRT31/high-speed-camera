@@ -360,6 +360,27 @@ With those foundations now in place, and with the prototype functioning reliably
 
 This step is important because our current experiments aim to replicate the original exhibit’s operating conditions as closely as possible. The high speed camera will ultimately need to perform under those same conditions, and without the UV lighting the visual characteristics of the droplets in motion cannot be fully representative. By bringing the UV subsystem online and aligning its activation with the droplet detection events, we can ensure that the prototype now behaves as a faithful miniature of the final installation, providing us with realistic test data for refining our camera capture methods.
 
+To understand how the UV illumination is implemented in hardware, we examined the dedicated PCB and schematic for the curing light module. The system is powered by a 48 V supply, which enters through the DC input connector and is routed directly to the positive side of the LED array. In fact, the high rail is always present on the LEDs they are permanently tied to the 48 V line through wide copper traces designed to handle the high current drawn by six high power diodes rated at 5–10 W each. The true switching element lies on the ground side of the circuit, where current return is either allowed or blocked.
+
+Control is achieved using a power MOSFET, which is placed between the LED cathodes and ground. When the Arduino provides a gate drive signal, the MOSFET turns on and completes the current path, allowing the LEDs to illuminate. When the gate is low, the MOSFET isolates the LEDs from ground, so even though the anodes sit at 48 V, no current can flow. This so called low side switching architecture is both efficient and practical, as it avoids the need to break the high voltage rail directly. Supporting resistors on the gate path help ensure stable switching, while a secondary indicator LED provides a simple visual cue when the system is active.
+
+On the PCB layout, the high power rails are clearly distinguished: the positive supply is highlighted in red, the ground return in blue. Their trace widths are intentionally large to handle sustained current without overheating. The connectors labeled CON_P and CON_N distribute the positive and negative rails to the LED strings, while the MOSFET is positioned close to the load to minimize parasitic effects.
+
+This arrangement means the LEDs are effectively always connected to high, but they only light when the MOSFET pulls them down to ground under explicit logic control. That design makes the UV array safe to integrate into the broader system, since activation cannot occur unless the Arduino deliberately drives the gate. With this circuitry in place, our next task is to synchronize the UV flashes with droplet detection and camera capture, creating test conditions identical to the final exhibit and enabling us to refine our imaging under realistic illumination.
+
+   *Schematic, UV Curing Light*  
+   <img src="Schematic_PHOTOPOLYMER_CURE_LIGHT_V0_0_2025.png" width="500"/>  
+
+   *PCB Layout, UV Curing Light*  
+   <img src="PCB_PCB_PHOTOPOLYMER_CURE_LIGHT_V0_0_2025-07-21.png" width="500"/>  
+
+After reviewing the schematic and PCB layout, the next step was to bring the curing light hardware into operation. To do this, we first soldered connectors both onto the dedicated UV PCB and onto the prototype’s main PCB, ensuring that the two boards could be linked securely using jumper wires. This modular approach gave us the flexibility to test the curing system step by step before committing to full integration with the entire LED array.
+
+For the first trial, we connected the UV PCB not to the full exhibit lighting assembly but to a single high-power LED. Our intention was to validate the electrical connections and confirm that the MOSFET switching stage behaved as expected under load. With the board connected to a regulated 48 V power supply, the LED illuminated exactly as designed when the MOSFET gate was driven, demonstrating that the circuit was functional and that the soldered connections were stable. This staged approach allowed us to test safely and verify the design at minimal risk.
+
+Once this initial validation succeeded, we disconnected the test LED and instead wired the UV PCB directly to the LED rows mounted on the prototype. With the same 48 V supply applied, the larger LED assembly activated correctly, confirming that the power distribution, MOSFET control, and wiring harness all operated reliably at scale. This successful test meant the UV subsystem could now be considered fully integrated.
+
+
 ## Next Steps
 
 ??
