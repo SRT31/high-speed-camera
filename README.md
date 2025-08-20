@@ -68,7 +68,7 @@ Currently, the recorded frames appear dark due to limited lighting during initia
 ---
 ## **Raspiraw Command Line Options**
 
-Based on the [raspiraw GitHub repo (deprecated, kept for reference)](https://github.com/6by9/raspiraw).
+Based on the [raspiraw GitHub repo, deprecated, kept for reference](https://github.com/6by9/raspiraw).
 This is a clarified summary we prepared for our project README.
 
 ### **Base Options**
@@ -466,7 +466,7 @@ The goal of this stage was to verify that the camera was functioning properly an
 
 ### **First Attempt**
 
-In the first trial no video was captured at all. Our first thought was that perhaps the system itself was working, but the camera was not properly aligned and therefore failed to record the event. To test this possibility, we tried moving the camera as close as possible to the droplet path, hoping that proximity would reveal at least a faint signal. We also increased the frame height from 64 to 320 pixels. Since a frame height of 64 is quite narrow, expanding to 320 gave us a much wider field of view and a greater chance of capturing something in the frame.
+In the first attempt, the resulting video contained only a black screen, showing no evidence of the droplet or the UV flash. Our first thought was that perhaps the system itself was working, but the camera was not properly aligned and therefore failed to record the event. To test this possibility, we tried moving the camera as close as possible to the droplet path, hoping that proximity would reveal at least a faint signal. We also increased the frame height from 64 to 320 pixels. Since a frame height of 64 is quite narrow, expanding to 320 gave us a much wider field of view and a greater chance of capturing something in the frame.
 
 We recall that the camera is mounted at a 90-degree rotation, since the rolling shutter sensor reads line by line and for our application the vertical axis of the falling droplets is more critical than the horizontal dimension. By reducing the number of lines we effectively compress the axis and can capture the motion more efficiently. In this first attempt, however, even with the adjustments to resolution and positioning, no usable video was produced.
 
