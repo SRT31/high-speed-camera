@@ -8,6 +8,7 @@ An embedded system for visualizing fast UV-triggered polymerization reactions in
   - [System Components](#system-components)
   - [Optimizing Capture Speed](#optimizing-capture-speed)
   - [Frame Processing and Output](#frame-processing-and-output)
+  - [Raspiraw Command Line Options](#raspiraw-command-line-options)
   - [System Testing Update](#system-testing-update)
   - [Outdoor Lighting Test](#outdoor-lighting-test)
     - [Sample Captures](#sample-captures)
@@ -65,6 +66,84 @@ This pipeline allowed us to reconstruct the short, high-speed event into a tempo
 Currently, the recorded frames appear dark due to limited lighting during initial testing. We are experimenting with improved lighting conditions, but expect that the final exhibit setup, which includes a strong UV flash during the reaction, will provide sufficient illumination without the need for supplemental light sources. If needed, we have the option to integrate additional lighting into the exhibit to ensure consistent visibility and recording quality.
 
 ---
+## **Raspiraw Command Line Options**
+
+Based on the [raspiraw GitHub repo (deprecated, kept for reference)](https://github.com/6by9/raspiraw).
+This is a clarified summary we prepared for our project README.
+
+### **Base Options**
+
+| Flag             | Description                                                                                  |
+|------------------|----------------------------------------------------------------------------------------------|
+| `-?`, `--help`   | Show help information.                                                                       |
+| `-md`, `--mode`  | Select predefined sensor mode (1–7). Example: `-md 7` = VGA high-FPS mode (640×480).         |
+| `-hf`, `--hflip` | Apply horizontal flip.                                                                       |
+| `-vf`, `--vflip` | Apply vertical flip.                                                                         |
+| `-e`, `--ss`     | Set exposure time in uncalibrated units (legacy).                                            |
+| `-eus`, `--expus`| Set exposure time in microseconds (recommended). Example: `-eus 200` = 200 µs exposure.      |
+| `-g`, `--gain`   | Set sensor gain (uncalibrated register code). Keep low (≈1) to reduce noise with strong light.|
+| `-c`, `--cameranum` | Select camera connector: 0 = CAM0, 1 = CAM1.                                              |
+| `-y`, `--i2c`    | Select I2C bus (0–2). Normally leave at default.                                             |
+
+### **Output Settings**
+
+| Flag               | Description                                                                                                  |
+|--------------------|--------------------------------------------------------------------------------------------------------------|
+| `-o`, `--output`   | Output file(s). Use printf style formatting: `/dev/shm/out.%04d.raw` → out.0001.raw, out.0002.raw …           |
+| `-hd`, `--header`  | Write 32 KB BRCM header to every frame (needed by dcraw, but too heavy at high FPS).                         |
+| `-hd0`, `--header0`| Write header once to a separate file (e.g. `hd0.32k`). Later concatenate: `cat hd0.32k frame.raw > out.raw`. |
+| `-ts`, `--tstamps` | Write timestamps to file in CSV format: `delta,index,timestamp`. Useful for FPS verification and drops.       |
+| `-emp`, `--empty`  | Write empty files only. Used to measure maximum callback rate (upper FPS bound) without I/O bottlenecks.      |
+
+### **Timing & Frame Rate**
+
+| Flag             | Description                                                                                  |
+|------------------|----------------------------------------------------------------------------------------------|
+| `-t`, `--timeout`| Capture duration in ms (default 5000). Example: `-t 100` = capture 100 ms.                   |
+| `-sr`, `--saverate` | Save every Nth frame. Default = 20. Use `-sr 1` to save all frames (RAM disk required).   |
+| `-f`, `--fps`    | Request target FPS (float). Adjusts frame/line length registers. Actual FPS depends on ROI.  |
+
+### **ROI (Region of Interest)**
+
+| Flag              | Description                                                                                 |
+|-------------------|---------------------------------------------------------------------------------------------|
+| `-w`, `--width`   | ROI width (columns). Reduces horizontal size and output data.                               |
+| `-h`, `--height`  | ROI height (rows). Critical for high FPS: fewer rows → shorter frame time → higher FPS.      |
+| `-tp`, `--top`    | Top offset of ROI. Defines which rows are captured. Example: `-tp 1200 -h 64` → 64 rows near middle. |
+
+### **Sub Sampling**
+
+| Flag              | Description                                                                                 |
+|-------------------|---------------------------------------------------------------------------------------------|
+| `-hi`, `--hinc`   | Horizontal increment (reg 0x3814). Skips pixels horizontally. Example: `-hi 11` = read all, larger values skip pixels. |
+| `-vi`, `--vinc`   | Vertical increment (reg 0x3815). Skips rows vertically. Example: `-vi 11` = read all, `-vi 22` ≈ every 2nd row. |
+
+Skipping rows/columns increases FPS but reduces effective resolution and may cause aliasing. We prefer reducing --height first, then apply increments if needed.
+
+### **Direct Register Access**
+
+| Flag             | Description                                                                                 |
+|------------------|---------------------------------------------------------------------------------------------|
+| `-r`, `--regs`   | Directly modify sensor registers in current mode. Format: `"ADDR,VAL;ADDR,VAL..."`.          |
+|                  | Example: `-r "380A,003C;3802,78;3806,05FB"`                                                 |
+|                  | Use with caution. Only registers defined in selected mode are valid.                      |
+
+### **Example: High FPS Burst**
+
+./raspiraw \
+  -md 7 -w 640 -h 64 -tp 1200 \
+  -fps 1000 -eus 200 -g 1 \
+  -t 100 -sr 1 \
+  -o /dev/shm/out.%06d.raw \
+  -ts /dev/shm/tstamps.csv \
+  -hd0 /dev/shm/hd0.32k
+
+Mode 7 (fast VGA).
+ROI = 640×64 pixels, shifted with -tp.
+Target ~1000 fps, exposure = 200 µs, gain = 1.
+Capture for 100 ms, save all frames (-sr 1) to RAM disk.
+Single header (-hd0) + timestamps (-ts).
+
 
 ## System Testing Update
 
