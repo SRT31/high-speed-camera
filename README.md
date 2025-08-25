@@ -518,6 +518,18 @@ However, this rear placement introduces a new challenge, the camera is now much 
    <img src="after.jpeg" width="500"/>  
 
 
+### Lens Adjustment
+Because the stock V2 module has a fixed focus lens optimized for 60 cm to infinity, we attempted manual focus adjustment by rotating the glued lens. This eventually damaged the lens. Since the museum did not have a spare V2 module, we replaced the lens with one from another camera module temporarily. In the future, we plan to switch to an IMX219 module with an **M12 mount** lens, which will allow attaching dedicated zoom/focus lenses.
+
+### Improving Contrast
+Another issue was poor contrast, UV illumination is blue while the droplets were colored with green dye, which provided limited visibility. We replaced the dyed water with a fluorescent additive. Under UV light, the droplets now appear bright and glowing, improving their visibility in high speed recordings.
+
+### Video Archive
+The following folder contains the **initial camera experiments**,  
+recorded before the lens was scratched and before the replacement of the green dye with fluorescent material:  
+
+[Initial Camera Tests]([https://drive.google.com/drive/u/1/folders/1z9lNiULwwIG49Ctze9CZizduTPMhc4pU](https://drive.google.com/drive/u/1/folders/1z9lNiULwwIG49Ctze9CZizduTPMhc4pU))
+
 ## Next Steps
 
 ??
