@@ -528,7 +528,7 @@ Another issue was poor contrast, UV illumination is blue while the droplets were
 The following folder contains the **initial camera experiments**,  
 recorded before the lens was scratched and before the replacement of the green dye with fluorescent material:  
 
-[Initial Camera Tests]([https://drive.google.com/drive/u/1/folders/1z9lNiULwwIG49Ctze9CZizduTPMhc4pU](https://drive.google.com/drive/u/1/folders/1z9lNiULwwIG49Ctze9CZizduTPMhc4pU))
+[Initial Camera Tests](https://drive.google.com/drive/u/1/folders/1z9lNiULwwIG49Ctze9CZizduTPMhc4pU)
 
 ## Next Steps
 
