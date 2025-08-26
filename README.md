@@ -540,6 +540,19 @@ The lens is now calibrated for a working distance of 7.3 cm.
 *Focused view of the dispensing nozzle at 7.3 cm after lens calibration*  
 <img src="focus.jpg" width="500"/>
 
+### Focus Improvement
+
+To demonstrate the impact of proper focus calibration, we created a comparison video that combines two recordings into a single stacked frame:
+
+Top section – Droplet capture recorded before lens focus adjustment.
+
+Bottom section – Droplet capture recorded after calibrating the IMX219 lens at a working distance of 7.3 cm.
+
+![Focus comparison – top: before calibration, bottom: after calibration](output.gif)
+
+
+The difference is clearת in the bottom section, the droplet edges are sharper, contrast is higher, and fine details are more visible. This confirms that accurate optical focusing significantly improves image quality and should be performed prior to sensor-level register tuning.
+
 ## Next Steps
 
 ??
