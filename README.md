@@ -531,9 +531,14 @@ recorded before the lens was scratched and before the replacement of the green d
 [Initial Camera Tests](https://drive.google.com/drive/u/1/folders/1z9lNiULwwIG49Ctze9CZizduTPMhc4pU)
 
 
-To correct our focusing workflow, we switched from Raspberry Pi OS Lite to the standard Raspberry Pi OS to enable a live preview. With the preview active, we placed a high contrast ruler at the working distance and manually rotated the IMX219 lens until we reached maximum sharpness. Any further movement in either direction immediately reduced focus, confirming the peak.
+To correct our focusing workflow, we switched from Raspberry Pi OS Lite to the standard Raspberry Pi OS to enable a live preview. With the preview active, we placed a high-contrast ruler at the working distance and manually rotated the IMX219 lens until we reached maximum sharpness. Any further movement in either direction immediately reduced focus, confirming the peak.
+The lens is now calibrated for a working distance of 7.3 cm.
 
-<img src="focus_lens_adjustment.jpg" width="500"/>
+*Ruler used to calibrate the IMX219 lens at 7.3 cm working distance*  
+<img src="focus_lens_adjustment.jpg" width="500"/>  
+
+*Focused view of the dispensing nozzle at 7.3 cm after lens calibration*  
+<img src="focus.jpg" width="500"/>
 
 ## Next Steps
 
