@@ -550,8 +550,9 @@ Bottom section – Droplet capture recorded after calibrating the IMX219 lens at
 
 ![Focus comparison – top: before calibration, bottom: after calibration](output.gif)
 
+[Focus comparison](https://drive.google.com/file/d/1X2-TqklAu1A6jz3skCsFLxwyzy4B9QhM/view?usp=drive_link)
 
-The difference is clearת in the bottom section, the droplet edges are sharper, contrast is higher, and fine details are more visible. This confirms that accurate optical focusing significantly improves image quality and should be performed prior to sensor-level register tuning.
+The difference is clear, in the bottom section, the droplet edges are sharper, contrast is higher, and fine details are more visible. This confirms that accurate optical focusing significantly improves image quality and should be performed prior to sensor-level register tuning.
 
 ## Next Steps
 
