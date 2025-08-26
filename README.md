@@ -546,13 +546,31 @@ To demonstrate the impact of proper focus calibration, we created a comparison v
 
 Top section – Droplet capture recorded before lens focus adjustment.
 
-Bottom section – Droplet capture recorded after calibrating the IMX219 lens at a working distance of 7.3 cm.
+Bottom section – Droplet capture recorded after calibrating the IMX219 lens.
 
 ![Focus comparison – top: before calibration, bottom: after calibration](output.gif)
 
 [Focus comparison](https://drive.google.com/file/d/1X2-TqklAu1A6jz3skCsFLxwyzy4B9QhM/view?usp=drive_link)
 
 The difference is clear, in the bottom section, the droplet edges are sharper, contrast is higher, and fine details are more visible. This confirms that accurate optical focusing significantly improves image quality and should be performed prior to sensor-level register tuning.
+
+### Exposure and Gain Adjustment
+
+After calibrating the lens focus, we moved on to adjusting the sensor parameters to further improve image clarity during high speed capture. The two most important settings for this stage are gain and exposure time, as both directly affect brightness, sharpness, and the quality of the captured droplet motion.
+
+Gain refers to the amplification of the signal coming from the sensor’s pixels. Increasing the gain makes the image appear brighter without changing the exposure time, but this comes at the cost of amplifying noise as well, which reduces the overall signal to noise ratio. For our system this trade off is not desirable, because the UV illumination during the polymerization reaction is already strong enough to provide sufficient brightness. To preserve the cleanest possible image, we fixed the gain at a value of 1× in all tests, ensuring that no unnecessary noise was introduced into the recordings.
+
+Exposure time, or shutter time, defines how long each row of the rolling shutter sensor is exposed to light before being read out. In the raspiraw tool this parameter is controlled with the -eus flag and is set in microseconds. A longer exposure gathers more light and results in a brighter image, but it also reduces the maximum achievable frame rate and introduces motion blur, which is particularly problematic when recording droplets that fall and polymerize within only a few milliseconds. Exposure time must also remain shorter than the total frame duration, otherwise the sensor cannot complete the readout in time, which limits how far the value can be increased. Conversely, very short exposures minimize blur and preserve the high temporal resolution we need, but they require strong illumination to avoid underexposure.
+
+To evaluate the effect of exposure time under our fixed gain of 1, we recorded a series of tests at default exposure (set to -1), 50, 100, 200, 500, and 800 microseconds. In this context, setting -eus -1 instructs the driver to use the sensor’s default automatic exposure, letting the system determine the integration time internally. These six recordings were combined into a single stacked comparison video for direct evaluation.
+
+![Stacked exposure comparison](stacked_6videos.gif)
+
+[Stacked exposure comparison, from top to bottom: default (-1), 50 us, 100 us, 200 us, 500 us, 800 us](https://drive.google.com/file/d/1cCWQ9jaKp1_bPCUkb_xt1R3oLjgblMFd/view?usp=drive_link)
+
+The results show a clear trend. At 50 us the droplets are sharp and well defined, with minimal motion blur, although the overall brightness is lower.
+
+From these results we conclude that the optimal setting at this stage is 50 us with gain fixed at 1. This configuration provides the best balance between brightness and sharpness, enabling us to clearly capture the droplet motion without excessive blur, and establishing a strong baseline for further tuning of the camera registers and overall capture pipeline.
 
 ## Next Steps
 
