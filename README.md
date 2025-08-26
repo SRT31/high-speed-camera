@@ -18,6 +18,8 @@ An embedded system for visualizing fast UV-triggered polymerization reactions in
   - [Hardware Integration](#hardware-integration)
   - [Integrating UV Illumination into the Prototype](#integrating-UV-Illumination-into-the-prototype)
   - [Camera Synchronization Experiments](#camera-synchronization-experiments)
+    - [Focus Improvement](#focus-improvement)
+    - [Exposure and Gain Adjustment](#exposure-and-gain-adjustment)
   - [Next Steps](#next-steps)
  
 
