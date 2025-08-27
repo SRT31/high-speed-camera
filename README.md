@@ -582,6 +582,7 @@ The comparison video below shows that the differences across these extremely sho
 
 [short exposure comparison, from top to bottom: 1 us, 5 us, 10 us, 25 us, 50 us, 60 us](https://drive.google.com/file/d/1J8HzZhqTxJV4cv6MzSbxZyY9jCHJqMZH/view?usp=drive_link)
 
+Having reached this point, we decided it was time to transition from water based testing to the actual material used in the exhibit. To improve contrast and visibility under UV illumination, we plan to mix a fluorescent additive into the photopolymer. This will cause the droplets to appear bright and glowing when exposed to UV light, significantly enhancing the contrast and overall image quality in the high speed recordings.
 
 ## Next Steps
 
