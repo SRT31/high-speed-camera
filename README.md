@@ -574,6 +574,15 @@ The results show a clear trend. At 50 us the droplets are sharp and well defined
 
 From these results we conclude that the optimal setting at this stage is 50 us with gain fixed at 1. This configuration provides the best balance between brightness and sharpness, enabling us to clearly capture the droplet motion without excessive blur, and establishing a strong baseline for further tuning of the camera registers and overall capture pipeline.
 
+After identifying 50 us as the best compromise between brightness and sharpness, we performed an additional series of tests at even shorter exposures of 1, 5, 10, 25, 50, and 60 us in order to evaluate whether reducing the exposure further would provide additional benefits.
+
+The comparison video below shows that the differences across these extremely short exposures are minimal. Motion blur was already well controlled at 50 us, and reducing the exposure to values as low as 1 us did not noticeably improve image sharpness or contrast. Based on these results, we concluded that 50 us remains a suitable baseline and that further reductions in exposure are unnecessary for our current illumination conditions.
+
+![eus](eus.gif)
+
+[short exposure comparison, from top to bottom: 1 us, 5 us, 10 us, 25 us, 50 us, 60 us](https://drive.google.com/file/d/1J8HzZhqTxJV4cv6MzSbxZyY9jCHJqMZH/view?usp=drive_link)
+
+
 ## Next Steps
 
 ??
