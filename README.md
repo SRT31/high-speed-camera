@@ -590,6 +590,27 @@ The comparison video below shows that the differences across these extremely sho
 
 Having reached this point, we decided it was time to transition from water based testing to the actual material used in the exhibit. To improve contrast and visibility under UV illumination, we plan to mix a fluorescent additive into the photopolymer. This will cause the droplets to appear bright and glowing when exposed to UV light, significantly enhancing the contrast and overall image quality in the high speed recordings.
 
+## Fluorescent Additive and Exposure Adjustment ##
+
+After completing the water based tests, we transitioned to the actual photopolymer used in the exhibit. To enhance visibility under UV illumination, we mixed a small amount of fluorescent powder into the polymer. A preliminary check under external UV light confirmed two important points:
+The material indeed emitted a strong glow, providing higher contrast compared to water, The additive did not interfere with the polymerization process, the droplet still cured correctly under UV.
+
+Once confirmed, we replaced the water with the fluorescent polymer and began high speed capture tests using the same baseline settings established earlier (50 us exposure, gain fixed at 1). However, the recordings at 50 us were too dark under these new conditions. To compensate, we increased the exposure time step by step, testing 500 us and finally 1000 us. The best results were obtained at 1000 us, which is the maximum allowed by the sensor timing constraints.
+
+The reason 1000 us is the upper limit is that exposure time must remain shorter than the total frame duration. In rolling shutter sensors, each row must be exposed and then read out sequentially. If the exposure is set longer than the time it takes to scan the entire frame, the sensor cannot complete the readout, leading to image corruption or dropped frames. In our configuration, 1000 us represents the longest valid integration time that still allows full frame readout at the desired frame rate.
+
+The following recordings demonstrate the progression:
+
+![First attempt with 50 us exposure on polymer droplets](firstpol50.gif)
+
+[First attempt with 50 us exposure on polymer droplets](https://drive.google.com/file/d/1VXqXNtUjAdg2IJR1tUk5zI5pbu2uNVJz/view?usp=drive_link)
+
+![Comparison of three exposure settings (50 us, 500 us, and 1000 us), stacked vertically](firstpol.gif)
+
+[Comparison of three exposure settings (50 us, 500 us, and 1000 us), stacked vertically](https://drive.google.com/file/d/18h_Qybyh7JIyYHXmYGO3AuyPu7R205_c/view?usp=drive_link)
+
+This stacked recording directly compares three exposure values: 50 us at the top, 500 us in the middle, and 1000 us at the bottom. The progression clearly shows how increasing the exposure time improves brightness and visibility of the fluorescent polymer droplets. While 50 us maintains high temporal resolution, the image is too dark. At 500 us the droplets become brighter but still lack optimal contrast. At 1000 us, the maximum valid exposure for our configuration, the droplets are clearly visible with glowing edges and well defined contours, confirming this as the best setting for our illumination conditions.
+
 ## Next Steps
 
 ??
