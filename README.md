@@ -631,11 +631,11 @@ For saturation (dcraw -S), we swept a range of input values and determined that 
 
 *Representative Frames After Calibration*  
 
-<img src="000043.png" width="400"/>  
+<img src="43.png" width="400"/>  
 
-<img src="000046.png" width="400"/>  
+<img src="46.png" width="400"/>  
 
-<img src="000049.png" width="400"/>  
+<img src="49.png" width="400"/>  
 
 ## Next Steps
 
