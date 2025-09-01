@@ -22,6 +22,7 @@ An embedded system for visualizing fast UV-triggered polymerization reactions in
     - [Exposure and Gain Adjustment](#exposure-and-gain-adjustment)
   - [Fluorescent Additive and Exposure Adjustment](#fluorescent-additive-and-exposure-adjustment)
   - [Sensor Calibration Workflow](#sensor-calibration-workflow)
+  - [Camera Relocation and Lens Upgrade](#camera-relocation-and-lens-upgrade)
   - [Next Steps](#next-steps)
  
 
@@ -636,6 +637,18 @@ For saturation (dcraw -S), we swept a range of input values and determined that 
 <img src="46.png" width="400"/>  
 
 <img src="49.png" width="400"/>  
+
+## Camera Relocation and Lens Upgrade ##
+
+After obtaining the initial recordings, we reviewed the results with our project supervisor. The feedback was that the image quality was already sufficient for the exhibit: the droplets were clearly visible, well separated, and free from motion smearing or aliasing. However, due to the limited field of view of the stock lens, the droplet appeared partially cropped in the frame.
+
+To mitigate this effect, we repositioned the camera farther from the dispensing nozzle, increasing the working distance from 7.3 cm to 32 cm. At this new distance, we performed a fresh lens focus adjustment to match the updated geometry, ensuring that the sensor plane aligned precisely with the converging rays from the lens. Once refocused, the droplets were again sharply resolved.
+
+This wider perspective allowed the full droplet trajectory to be captured in a single frame while maintaining high sharpness and contrast. The recording confirmed that moving the camera back effectively solved the cropping issue. Looking ahead, we ordered the same IMX219 sensor with an M12 lens holder, which will enable us to swap lenses freely and optimize the captures.
+
+![High-speed recording of droplet motion at 32 cm working distance](second_good.gif)
+
+[High-speed recording of droplet motion at 32 cm working distance](https://drive.google.com/file/d/1fGTXfQZj-48s78iyI7dZXUsySlFIUiiA/view?usp=drive_link)
 
 ## Next Steps
 
