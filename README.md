@@ -621,7 +621,7 @@ We then developed a calibration script capable of extracting sensor statistics s
 
 To determine the black level offset, we covered the camera lens completely and captured a set of dark frames. Processing these frames with sensor_calibrate_imx219_.py yielded a consistent black level estimate of 63 DN across all channels. We fixed this value in all subsequent conversions (dcraw -k 63) to ensure that no negative values or artificial offsets would affect image linearity.
 
-For white balance, we ran the analyze_sensor_json.py tool on a large batch of captures. This script computes averages over the red, green, and blue planes, either within a defined ROI or using the brightest unclipped pixels in the frame. The resulting multipliers were consolidated into a CSV file and confirmed by visual inspection. We adopted the following calibration values in the dcraw conversion stage:
+For white balance, we ran the analyze_sensor_json.py tool on a large batch of previously generated JSON reports. Each JSON file already contained per frame statistics exported from the raw sensor data. The script aggregated these existing values by averaging across the red, green, and blue planes. The resulting multipliers were consolidated into a CSV file and confirmed by visual inspection. We then adopted the following calibration values in the dcraw conversion stage:
 
 -r 1.048 0.996 1.005 0.650
 
