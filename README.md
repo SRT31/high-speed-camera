@@ -542,6 +542,12 @@ The lens is now calibrated for a working distance of 7.3 cm.
 *Focused view of the dispensing nozzle at 7.3 cm after lens calibration*  
 <img src="focus.jpg" width="500"/>
 
+The reason this adjustment is necessary is rooted in the imaging condition of a thin lens. The relation
+
+<img src="lens_equation.png" width="200"/>
+
+states that for a given focal length f, an object at distance D_0, will only form a sharp image if the sensor is positioned at the corresponding image distance D_i, By rotating the IMX219 lens, we are effectively changing the spacing between the lens and the sensor. At the correct position, the rays from each point in the object converge precisely on the sensor pixels, producing maximum sharpness and contrast. If the lens is rotated slightly in or out, the convergence plane shifts before or after the sensor, and the image becomes blurred. At our chosen working distance of 7.3 cm, the adjustment aligns the optical geometry exactly, ensuring accurate focusing.
+
 ### Focus Improvement
 
 To demonstrate the impact of proper focus calibration, we created a comparison video that combines two recordings into a single stacked frame:
