@@ -20,6 +20,8 @@ An embedded system for visualizing fast UV-triggered polymerization reactions in
   - [Camera Synchronization Experiments](#camera-synchronization-experiments)
     - [Focus Improvement](#focus-improvement)
     - [Exposure and Gain Adjustment](#exposure-and-gain-adjustment)
+  - [Fluorescent Additive and Exposure Adjustment](#fluorescent-additive-and-exposure-adjustment)
+  - [Sensor Calibration Workflow](#sensor-calibration-workflow)
   - [Next Steps](#next-steps)
  
 
@@ -610,6 +612,22 @@ The following recordings demonstrate the progression:
 [Comparison of three exposure settings (50 us, 500 us, and 1000 us), stacked vertically](https://drive.google.com/file/d/18h_Qybyh7JIyYHXmYGO3AuyPu7R205_c/view?usp=drive_link)
 
 This stacked recording directly compares three exposure values: 50 us at the top, 500 us in the middle, and 1000 us at the bottom. The progression clearly shows how increasing the exposure time improves brightness and visibility of the fluorescent polymer droplets. While 50 us maintains high temporal resolution, the image is too dark. At 500 us the droplets become brighter but still lack optimal contrast. At 1000 us, the maximum valid exposure for our configuration, the droplets are clearly visible with glowing edges and well defined contours, confirming this as the best setting for our illumination conditions.
+
+## Sensor Calibration Workflow ##
+
+After optimizing focus and exposure, we moved on to tuning the low level sensor parameters in order to improve image fidelity. The first step was to create a lightweight script to display individual frames rather than full video sequences, which allowed us to evaluate raw sensor output frame by frame.
+
+We then developed a calibration script capable of extracting sensor statistics such as white balance, saturation, and black level. A wrapper script (run_calibrate_range.sh) automated this process across large ranges of raw frames, producing structured JSON reports for each capture. This enabled us to build a statistical picture of the sensor’s baseline behavior.
+
+To determine the black level offset, we covered the camera lens completely and captured a set of dark frames. Processing these frames with sensor_calibrate_imx219_.py yielded a consistent black level estimate of 63 DN across all channels. We fixed this value in all subsequent conversions (dcraw -k 63) to ensure that no negative values or artificial offsets would affect image linearity.
+
+For white balance, we ran the analyze_sensor_json.py tool on a large batch of captures. This script computes averages over the red, green, and blue planes, either within a defined ROI or using the brightest unclipped pixels in the frame. The resulting multipliers were consolidated into a CSV file and confirmed by visual inspection. We adopted the following calibration values in the dcraw conversion stage:
+
+-r 1.048 0.996 1.005 0.650
+
+These coefficients ensured that all color channels were balanced relative to green, correcting for the IMX219’s native spectral sensitivity.
+
+For saturation (dcraw -S), we swept a range of input values and determined that the sensor saturates close to its full 10-bit scale. Visual inspection of highlight clipping showed that the most stable results were obtained with the maximum allowed value, 1023 DN, which we therefore fixed for all subsequent processing.
 
 ## Next Steps
 
