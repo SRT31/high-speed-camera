@@ -629,6 +629,10 @@ These coefficients ensured that all color channels were balanced relative to gre
 
 For saturation (dcraw -S), we swept a range of input values and determined that the sensor saturates close to its full 10-bit scale. Visual inspection of highlight clipping showed that the most stable results were obtained with the maximum allowed value, 1023 DN, which we therefore fixed for all subsequent processing.
 
+*Representative Frames After Calibration*  
+<img src="out.000043.raw.tiff" width="500"/>  
+<img src="out.000046.raw.tiff" width="500"/>  
+<img src="out.000049.raw.tiff" width="500"/>  
 ## Next Steps
 
 ??
