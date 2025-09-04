@@ -24,6 +24,7 @@ An embedded system for visualizing fast UV-triggered polymerization reactions in
   - [Sensor Calibration Workflow](#sensor-calibration-workflow)
   - [Camera Relocation and Lens Upgrade](#camera-relocation-and-lens-upgrade)
   - [Sharpening Filter in Video Encoding](#sharpening-filter-in-video-encoding)
+  - [System Setup and Environment Management](#system-setup-and-environment-management)
   - [Next Steps](#next-steps)
  
 
@@ -660,6 +661,42 @@ Through iterative testing we determined that the configuration unsharp=5:5:1.5:5
 ![High speed recording with sharpening applied](sharp.gif)
 
 [High-speed recording with sharpening applied](https://drive.google.com/file/d/1zB-2D83GyI8HG_rnekBO-HSA1uAQh32y/view?usp=drive_link)
+
+## System Setup and Environment Management ##
+
+In order to run the high speed capture system reliably, the Raspberry Pi had to be configured both at the operating system level and at the software environment level. The starting point was the official 2019-07-10 Raspbian Buster Full image. After flashing the SD card and booting the system, we applied several changes to the configuration files to enable proper camera support. Specifically, the file ~/boot/config.txt was edited to include the following lines:
+
+start_x=1
+dtparam=i2c_vc=on
+
+The first command enables the camera firmware interface, while the second activates the I2C bus on the video core, which is required for direct communication with the sensor. To support high bandwidth video capture, we also increased the GPU memory allocation to 256 MB, ensuring that enough buffer space was available for image frames.
+
+Once the base configuration was complete, we updated the package manager with:
+
+sudo apt update
+
+and proceeded to build the forked repository that contained the necessary capture tools. During compilation, several dependencies were missing and had to be installed manually. In particular, building dcraw required the following development libraries:
+
+sudo apt install libjpeg-dev liblcms2-dev libjasper-dev
+
+These libraries provide support for JPEG decoding, color management, and additional image formats that are essential for converting the raw sensor data into usable images.
+
+Because the project integrates multiple Python programs for different tasks (calibration, frame extraction, analysis, and encoding), we adopted a structured approach to dependency management. Rather than installing all packages globally, which often leads to version conflicts, each program is placed in its own dedicated directory with a virtual environment. This guarantees that the libraries required for one program do not interfere with those of another.
+
+The workflow for managing these environments is straightforward. After creating the environment with
+
+python3 -m venv .venv
+
+we activate it before running any Python scripts using:
+
+source .venv/bin/activate
+
+Once activated, all installed libraries are isolated within that environment. Exiting is done simply with:
+
+deactivate
+
+This structure has proven essential for a project of this scale, where multiple scripts are developed and tested in parallel. By isolating the dependencies for each component, we avoided conflicts and maintained reproducibility across the entire workflow.
+
 
 
 ## Next Steps
