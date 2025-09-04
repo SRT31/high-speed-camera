@@ -25,6 +25,7 @@ An embedded system for visualizing fast UV-triggered polymerization reactions in
   - [Camera Relocation and Lens Upgrade](#camera-relocation-and-lens-upgrade)
   - [Sharpening Filter in Video Encoding](#sharpening-filter-in-video-encoding)
   - [System Setup and Environment Management](#system-setup-and-environment-management)
+  - [Interactive Playback UI](#Interactive-playback-UI)
   - [Next Steps](#next-steps)
  
 
@@ -697,7 +698,55 @@ deactivate
 
 This structure has proven essential for a project of this scale, where multiple scripts are developed and tested in parallel. By isolating the dependencies for each component, we avoided conflicts and maintained reproducibility across the entire workflow.
 
+## Interactive Playback UI ##
 
+The next step was to design an interactive playback interface. The goal was to provide the museum visitors with a way to directly control the viewing experience: pausing the droplet, rewinding it, or jumping back to key moments. Achieving this required a combination of careful software design and reliable physical hardware integration with the Raspberry Pi.
+
+The playback system was implemented using OpenCV, an open-source computer vision and image processing library. Other playback options available on Raspbian Buster, such as OMXPlayer, VLC, or mpv, were considered, but each had significant drawbacks. OMXPlayer and mpv relied on legacy hardware acceleration and offered little flexibility beyond simple playback. VLC provided more filters but demanded higher CPU usage and was less stable on Buster. In fact, when we initially attempted to use VLC, it introduced system-level issues that we could not resolve and ultimately forced us to reinstall the entire operating system.
+
+OpenCV resolved these issues by offering a single, well optimized framework entirely within Python. With OpenCV we were able to load raw TIFF frames, perform preprocessing steps such as bit depth conversion, rotation, and letterboxing, and later extend the system with advanced motion interpolation. This combination of efficiency, flexibility, and direct integration into our Python workflow made OpenCV the most practical and scalable choice for building an interactive, high speed playback interface on the Raspberry Pi.
+
+### Stage 1: Keyboard based Player ###
+
+The first implementation relied entirely on the keyboard. This approach provided a quick way to validate the playback logic before committing to hardware. The player script performed several preprocessing steps before any playback was shown on the screen. All raw TIFF frames were loaded from the capture directory. Since the sensor generated 16 bit grayscale frames, the images were converted to 8 bit format to match display hardware limitations. Each frame was rotated by 270 deg so that the droplet appeared in the correct orientation on the HDMI monitor. Letterboxing was applied to preserve the sensor’s original aspect ratio and prevent distortion.
+
+Timing was handled with precision: the loop targeted 60 frames per second, corresponding to the monitor refresh rate. The code calculated the frame period in seconds (1/60) and compared it with the actual elapsed time using time.perf_counter(). If the playback loop drifted behind schedule, the program applied a correction to maintain synchronization. To avoid boundary conditions, frame indices were managed in a cyclic manner: once the last frame was reached, the index wrapped back to the beginning (or in reverse, wrapped to the end). This made it possible to continuously loop the experiment in both directions without special handling at the edges.
+
+Keyboard mappings provided full playback control. The space bar toggled between play and pause, R reversed direction, A and D allowed stepping backward or forward by one frame (while forcing pause), J and K jumped five frames in the respective directions, S reset the sequence to the first frame, F toggled fullscreen, and Esc/Q terminated the program. This implementation, found in the script player_tiff_keyboard.py, created a responsive baseline and allowed us to quickly test the feel of playback.
+
+### Stage 2: Interpolation for Smoother Playback ###
+
+Even with correct timing, direct playback of the raw ~100 captured frames at 60 fps appeared visually discontinuous. The droplet seemed to jump slightly between frames, breaking the illusion of continuous motion. To mitigate this, we introduced frame interpolation using Farnebäck optical flow.
+
+This algorithm estimated pixel wise motion between consecutive frames. A coordinate grid was generated (np.meshgrid), and each frame was warped toward the other based on its optical flow field. For an intermediate frame positioned at time fraction a between frames A and B, both A and B were warped proportionally (a and 1–a), and the two warped images were blended. The result was a synthetic frame that smoothly bridged the motion gap.
+
+We tested several interpolation factors: 2, 4, 5, 6, and 8. Each factor represented how many steps were inserted between two original frames. For example, a factor of 4 turned every pair of consecutive frames into four steps: the first original, two interpolated frames, and the second original. Factors smaller than 4 left visible discontinuities, while larger factors artificially slowed down the droplet’s fall because the display remained fixed at 60 fps. After extensive trials, factor 4 was selected as the best compromise: motion appeared smooth without distorting the perceived timescale of the droplet. Precomputing the interpolated sequence ensured that playback at 60 fps remained consistent, without adding real time processing delays. This functionality was implemented in player_tiff_keyboard_interp.py.
+
+### Stage 3: Hardware Interface with Push Buttons ###
+
+Once the playback logic was validated in software, we moved on to physical interaction. For a public exhibit, relying on a keyboard was clearly impractical. At this stage we considered two possible interface options: a touchscreen display implemented with a Python GUI (for example using Tkinter), or a set of physical push buttons wired directly to the Raspberry Pi. Although a touchscreen could have provided a flexible graphical interface, it was ultimately rejected because the installation is designed for children. Continuous handling would quickly smudge or damage the screen and reduce its durability. Physical buttons, on the other hand, are robust, easy to clean, and provide a clear tactile response that is better suited for interactive use in a museum setting.
+
+We therefore selected push button switches with integrated microswitches. Each unit consists of a large, durable button on the front and a microswitch block with three metal tabs for electrical connections. The terminals are labeled COM (common), NO (normally open), and NC (normally closed). We chose COM + NO, which is open when idle and closes only when pressed. This configuration is intuitive: the circuit is “off” until a visitor presses the button.
+
+The wiring followed an active low logic: the COM terminal was connected to ground, the NO terminal to a GPIO input pin, and the Pi’s internal pull up resistor was enabled in software. As a result, the pin reads HIGH by default and transitions to LOW when the button is pressed. The Raspberry Pi has multiple equivalent ground pins, so for convenience each button’s COM was wired to a nearby GND according to the pin layout. A dedicated test script (button_test.py) confirmed correct wiring by continuously reading the GPIO input and printing “Pressed” or “Released,” with a short debounce delay to account for mechanical switch bounce.
+
+### Stage 4: Integrating Buttons into the Player ###
+
+In the final implementation (player_pin.py), three buttons were mapped to playback functions: GPIO27 toggled play/pause, GPIO23 reversed direction, and GPIO24 performed a fixed jump forward or backward depending on the current playback direction. Each pin was configured with GPIO.PUD_UP and an event detection callback on the falling edge. To avoid false triggers from switch bounce, a debounce interval of 200 ms was applied.
+
+The figure below shows the Raspberry Pi GPIO header, which served as a reference during development for identifying the correct pins and nearby GND connections.
+
+<img src="pin_layout.png" width="500"/>  
+
+The callback functions directly modified the playback state. Pressing the play button inverted the Boolean variable controlling playback. Pressing the reverse button multiplied the direction variable by –1. Pressing the jump button incremented or decremented the frame index by a constant JUMP_AMOUNT, depending on the current direction. Importantly, the jump button did not alter the play/pause state, which meant that playback could continue seamlessly if already running. This preserved consistency with the earlier keyboard interface and ensured a smooth user experience.
+
+### Results and Validation ###
+
+The combined system successfully merged software interpolation with hardware interaction. Visitors can now pause the droplet mid air, reverse its motion, or jump back and forth in controlled steps. 
+
+Several technical details played an important role in reaching this point. By treating the frame index cyclically, the player avoided errors at the dataset boundaries and allowed continuous looping in both directions. Drift correction in the timing loop ensured that even when small delays accumulated, the display rhythm remained steady and consistent with the 60 fps target. The choice to precompute interpolated frames rather than generate them on the fly gave the droplet motion a smoother appearance while preserving the natural speed of the fall. On the hardware side, the decision to use active low wiring with the Pi’s internal pull ups simplified the circuitry and eliminated the need for extra components, while software based debouncing compensated for the mechanical bounce inherent in the push buttons.
+
+Validation was carried out step by step. We began with the button_test.py script, confirming that each switch produced clean transitions between pressed and released states. Once verified, the same logic was connected to the keyboard based player to check functional equivalence. Finally, the complete system—with interpolated frames, precise timing, and GPIO callbacks was tested as a whole. In every stage the behavior remained responsive, predictable, and aligned with the interactive experience we had envisioned for the exhibit.
 
 ## Next Steps
 
