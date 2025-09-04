@@ -23,6 +23,7 @@ An embedded system for visualizing fast UV-triggered polymerization reactions in
   - [Fluorescent Additive and Exposure Adjustment](#fluorescent-additive-and-exposure-adjustment)
   - [Sensor Calibration Workflow](#sensor-calibration-workflow)
   - [Camera Relocation and Lens Upgrade](#camera-relocation-and-lens-upgrade)
+  - [Sharpening Filter in Video Encoding](#sharpening-filter-in-video-encoding)
   - [Next Steps](#next-steps)
  
 
@@ -646,9 +647,20 @@ To mitigate this effect, we repositioned the camera farther from the dispensing 
 
 This wider perspective allowed the full droplet trajectory to be captured in a single frame while maintaining high sharpness and contrast. The recording confirmed that moving the camera back effectively solved the cropping issue. Looking ahead, we ordered the same IMX219 sensor with an M12 lens holder, which will enable us to swap lenses freely and optimize the captures.
 
-![High-speed recording of droplet motion at 32 cm working distance](second_good.gif)
+![High speed recording of droplet motion at 32 cm working distance](second_good.gif)
 
-[High-speed recording of droplet motion at 32 cm working distance](https://drive.google.com/file/d/1fGTXfQZj-48s78iyI7dZXUsySlFIUiiA/view?usp=drive_link)
+[High speed recording of droplet motion at 32 cm working distance](https://drive.google.com/file/d/1fGTXfQZj-48s78iyI7dZXUsySlFIUiiA/view?usp=drive_link)
+
+## Sharpening Filter in Video Encoding ##
+
+After assembling the video from the raw frames using the ffmpeg_timestamp.txt file, generated during the frame capture and calibration process, we explored additional processing steps to improve clarity. At this stage we introduced sharpening during the encoding phase using the unsharp filter in FFmpeg. This filter, expressed in the form unsharp=lx:ly:la:cx:cy:ca, provides control over both brightness and color sharpening. The kernel sizes determine how widely the effect spreads, while the strength parameters adjust its intensity. Stronger values enhance detail but risk introducing halo artifacts, while more subtle settings preserve a natural appearance.
+
+Through iterative testing we determined that the configuration unsharp=5:5:1.5:5:5:0.0 offered the best balance, producing sharper edges and clearer details without visible artifacts. The effect was validated by comparing the result to the earlier file second_good.mp4, and the optimized version was saved as sharpen_encoding.mp4. The comparison video below highlights the difference, with the lower half representing the sharpened encoding and appearing noticeably crisper than the original.
+
+![High speed recording with sharpening applied](sharp.gif)
+
+[High-speed recording with sharpening applied](https://drive.google.com/file/d/1zB-2D83GyI8HG_rnekBO-HSA1uAQh32y/view?usp=drive_link)
+
 
 ## Next Steps
 
