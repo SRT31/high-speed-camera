@@ -700,7 +700,7 @@ This structure has proven essential for a project of this scale, where multiple 
 
 ## Interactive Playback UI ##
 
-The next step was to design an interactive playback interface. The goal was to provide the museum visitors with a way to directly control the viewing experience: pausing the droplet, rewinding it, or jumping back to key moments. Achieving this required a combination of careful software design and reliable physical hardware integration with the Raspberry Pi.
+The next step was to design an interactive playback interface. The goal was to provide the museum visitors with a way to directly control the viewing experience: pausing the droplet, rewinding it, or jumping back to key moments. Achieving this required a combination of software design and physical hardware integration with the Raspberry Pi.
 
 The playback system was implemented using OpenCV, an open-source computer vision and image processing library. Other playback options available on Raspbian Buster, such as OMXPlayer, VLC, or mpv, were considered, but each had significant drawbacks. OMXPlayer and mpv relied on legacy hardware acceleration and offered little flexibility beyond simple playback. VLC provided more filters but demanded higher CPU usage and was less stable on Buster. In fact, when we initially attempted to use VLC, it introduced system-level issues that we could not resolve and ultimately forced us to reinstall the entire operating system.
 
