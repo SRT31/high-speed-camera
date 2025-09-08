@@ -152,6 +152,27 @@ const struct sensor_def *sensors[] = {
 
 We set DEFAULT_I2C_DEVICE to 0 and limited sensors[] to IMX219 to keep the capture path focused and deterministic for our hardware (RPi 3 + IMX219). On Raspberry Pi 3, the camera control channel uses the VideoCore camera I2C, typically exposed as /dev/i2c-0 when dtparam=i2c_vc=on is enabled, defaulting to bus [0] prevents accidental probing on the general purpose /dev/i2c-1. Removing other sensors trims dead code paths and simplifies high FPS / ROI tuning and maintenance.
 
+Next, we attempted to reduce the ROI with -w and -h as detailed in the command table above but raspiraw aborted with:
+
+```bash
+This sensor does not currently support manual cropping settings. Aborting
+```
+
+Because the message is sensor scoped (“This sensor…”), we suspected that other sensors expose a crop path that IMX219 is missing. We opened a side by side diff to compare a known working sensor with IMX219:
+
+```bash
+code --diff original-raspiraw/ov5647_modes.h original-raspiraw/imx219_modes.h
+```
+
+In VS Code it was immediately visible that OV5647 includes a set_crop(...) that writes ROI (width, height, and other) into sensor registers, while IMX219 has no such handler.
+
+<img src="ov5647toimx219_1.png" width="500"/>  
+
+OV5647 also wires the handler inside its sensor descriptor, this is what makes raspiraw accept -w or -h for that sensor:
+
+<img src="ov5647toimx219_2.png" width="500"/>  
+
+
 
 ## System Testing Update ##
 
