@@ -150,7 +150,7 @@ const struct sensor_def *sensors[] = {
 };
 ```
 
-We set DEFAULT_I2C_DEVICE to 0 and limited sensors[] to IMX219 to keep the capture path focused and deterministic for our hardware (RPi 3 + IMX219). On Raspberry Pi 3, the camera control channel uses the VideoCore camera I2C, typically exposed as /dev/i2c-0 when dtparam=i2c_vc=on is enabled, defaulting to bus [0] prevents accidental probing on the general-purpose /dev/i2c-1. Removing other sensors trims dead code paths and simplifies high FPS / ROI tuning and maintenance.
+We set DEFAULT_I2C_DEVICE to 0 and limited sensors[] to IMX219 to keep the capture path focused and deterministic for our hardware (RPi 3 + IMX219). On Raspberry Pi 3, the camera control channel uses the VideoCore camera I2C, typically exposed as /dev/i2c-0 when dtparam=i2c_vc=on is enabled, defaulting to bus [0] prevents accidental probing on the general purpose /dev/i2c-1. Removing other sensors trims dead code paths and simplifies high FPS / ROI tuning and maintenance.
 
 
 ## System Testing Update ##
