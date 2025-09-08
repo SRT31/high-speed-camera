@@ -9,6 +9,7 @@ An embedded system for visualizing fast UV-triggered polymerization reactions in
   - [Optimizing Capture Speed](#optimizing-capture-speed)
   - [Frame Processing and Output](#frame-processing-and-output)
   - [Raspiraw Command Line Options](#raspiraw-command-line-options)
+  - [Customizations for HighFPS Capture](#customizations-for-High-FPS-capture)
   - [System Testing Update](#system-testing-update)
   - [Outdoor Lighting Test](#outdoor-lighting-test)
     - [Sample Captures](#sample-captures)
@@ -136,24 +137,21 @@ Skipping rows/columns increases FPS but reduces effective resolution and may cau
 |                  | Example: `-r "380A,003C;3802,78;3806,05FB"`                                                 |
 |                  | Use with caution. Only registers defined in selected mode are valid.                      |
 
-### **Example: High FPS Burst**
+## Customizations for High FPS Capture ##
 
-./raspiraw \
-  -md 7 -w 640 -h 64 -tp 1200 \
-  -fps 1000 -eus 200 -g 1 \
-  -t 100 -sr 1 \
-  -o /dev/shm/out.%06d.raw \
-  -ts /dev/shm/tstamps.csv \
-  -hd0 /dev/shm/hd0.32k
+After cloning the public raspiraw repository, we realized the stock capture flow wasn’t aligned with our project goals. To reduce complexity early and keep the codebase focused on high FPS work with our specific hardware, we started in raspiraw.c, which centralizes sensor defaults and registration. Our immediate objective was to a. target a single sensor the IMX219 and b. set a sane default for the camera control bus so command line friction stays low.
 
-Mode 7 (fast VGA).
-ROI = 640×64 pixels, shifted with -tp.
-Target ~1000 fps, exposure = 200 µs, gain = 1.
-Capture for 100 ms, save all frames (-sr 1) to RAM disk.
-Single header (-hd0) + timestamps (-ts).
+We pinned DEFAULT_I2C_DEVICE to 0 and removed all non IMX219 entries, leaving:
+'''c
+const struct sensor_def *sensors[] = {
+    &imx219,
+    NULL
+};
+'''
 
 
-## System Testing Update
+
+## System Testing Update ##
 
 To evaluate the high-speed capture pipeline before testing the actual polymerization reaction, we conducted a preliminary run using a simple scene: a rotating fan under dim indoor lighting.
 
