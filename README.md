@@ -234,9 +234,16 @@ After pruning the enum, we removed the same commands from cmdline_commands[] and
 *raspiraw_params (left: original, right: ours)*  
 <img src="raspiraw_params.png" width="500"/>
 
+After removing the CLI commands and state flags, we aligned the runtime callback structs with the same capture only scope. In RASPIRAW_CALLBACK_T we deleted the AWB/processing fields (awb_queue, awb_thread_quit, wb_gains, processing_queue, processing_thread_quit), in RASPIRAW_ISP_CALLBACK_T we removed the YUV/extra-ISP fields (xvr_ip_pool, xvr_ip, processing_yuv_queue, processing_yuv_thread_quit). These fields belonged to the grey-world AWB path, the generic in process image processing path, and the YUV/ISP branch, none of which we use. Dropping them prevents those worker threads/queues from being created, reduces init/teardown and locking overhead, and forces any leftover references to fail at compile time.
+
+*RASPIRAW_CALLBACK_T and  RASPIRAW_ISP_CALLBACK_T (left: original, right: ours)*  
+<img src="RASPIRAW_PARAMS_T.png" width="500"/>
+
+
+
 ## System Testing Update ##
 
-To evaluate the high-speed capture pipeline before testing the actual polymerization reaction, we conducted a preliminary run using a simple scene: a rotating fan under dim indoor lighting.
+To evaluate the high speed capture pipeline before testing the actual polymerization reaction, we conducted a preliminary run using a simple scene: a rotating fan under dim indoor lighting.
 
 **[View sample capture](https://drive.google.com/file/d/1PzW4zkaScqAXy1D3jOnbjnEaSPEWVI3p/view)**
 
