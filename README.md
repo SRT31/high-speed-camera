@@ -210,7 +210,8 @@ Capture no longer aborted, but the image remained unclear and only 6 frames were
 
 We reviewed the CLI command enum in raspiraw.c and pruned GUI/ YUV/ auxiliary controls that do not contribute to our raw high FPS IMX219 capture path, then intentionally left the parser references in place so the compiler would surface all dependent code for removal. The red block in the VS Code diff below shows the exact enum constants deleted:
 
-<img src="cli_prune_enum.png" width="500" alt="Pruned CLI enum in raspiraw.c (left: ours, right: original)"/>
+*Pruned CLI enum in raspiraw.c (left: ours, right: original)*  
+<img src="cli_prune_enum.png" width="500"/>
 
 Each removed command was non essential for our architecture and would have kept unused threads, state, or I/O paths alive:
 
