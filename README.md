@@ -172,7 +172,41 @@ OV5647 also wires the handler inside its sensor descriptor, this is what makes r
 
 <img src="ov5647toimx219_2.png" width="500"/>  
 
+To add the same capability for IMX219, we mapped raspiraw’s ROI flags to the IMX219 registers that control output image size. From the imx219 datasheet (picture below), the ROI size is formed by 12 bit values split across MSB/LSB register pairs:
 
+x_output_size: 0x016C (MSB bits 11:8) + 0x016D (LSB bits 7:0)
+y_output_size: 0x016E (MSB bits 11:8) + 0x016F (LSB bits 7:0) 
+
+
+*From imx219 datasheet*  
+<img src="regs_datasheet_imx219.png.png" width="500"/>  
+
+We then added a lightweight imx219_set_crop(...) in imx219_modes.h that validates requested width / height against the current mode and writes 0x016C..0x016F. Finally, we connected the handler so raspiraw actually calls it:
+
+```c
+// Map ROI width / height to IMX219 output size registers
+int imx219_set_crop(const struct sensor_def *sensor, struct mode_def *mode, const struct raspiraw_crop *cfg) {
+    if( cfg->width >0){
+        mode->width = cfg->width;
+        modReg(mode, 0x016C , 0, 3, cfg->width >> 8, EQUAL);
+        modReg(mode, 0x016D, 0, 7, cfg->width & 0xFF, EQUAL);
+    }
+    if( cfg->height >0){
+        mode->height = cfg->height;
+        modReg(mode, 0x016E , 0, 3, cfg->height >> 8, EQUAL);
+        modReg(mode, 0x016F + 1, 0, 7, cfg->height & 0xFF, EQUAL);
+    }
+ return 0;
+}
+
+// rest of the code did not change
+
+
+// in struct sensor_def imx219 we add:
+.set_crop = imx219_set_crop,
+```
+
+Capture no longer aborts, but the image is unclear and only 6 frames were saved in 1 second at requested 30 fps. Our working assumption is startup processing overhead masking the expected ROI driven gain, next we will prune heavy/unused processing paths and then re measure effective fps.
 
 ## System Testing Update ##
 
