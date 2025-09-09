@@ -150,7 +150,7 @@ const struct sensor_def *sensors[] = {
 };
 ```
 
-We set DEFAULT_I2C_DEVICE to 0 and limited sensors[] to IMX219 to keep the capture path focused and deterministic for our hardware (RPi 3 + IMX219). On Raspberry Pi 3, the camera control channel uses the VideoCore camera I2C, typically exposed as /dev/i2c-0 when dtparam=i2c_vc=on is enabled, defaulting to bus [0] prevents accidental probing on the general purpose /dev/i2c-1. Removing other sensors trims dead code paths and simplifies high FPS / ROI tuning and maintenance.
+We set DEFAULT_I2C_DEVICE to 0 and limited sensors[] to IMX219 to keep the codebase focused and deterministic for our hardware RPi 3 + IMX219. On Raspberry Pi 3, the camera control channel uses the VideoCore camera I2C, typically exposed as /dev/i2c-0 when dtparam=i2c_vc=on is enabled, defaulting to bus [0] avoids accidental probing on the general purpose /dev/i2c-1. Removing other sensors does not improve fps [fps] by itself, it reduces surface area, makes the code easier to reason about, and lets us tailor the existing path to exactly what this project needs.
 
 Next, we attempted to reduce the ROI with -w and -h as detailed in the command table above but raspiraw aborted with:
 
@@ -174,7 +174,7 @@ OV5647 also wires the handler inside its sensor descriptor, this is what makes r
 
 To add the same capability for IMX219, we mapped raspiraw’s ROI flags to the IMX219 registers that control output image size. From the imx219 datasheet (picture below), the ROI size is formed by 12 bit values split across MSB/LSB register pairs:
 
-x_output_size: 0x016C (MSB bits 11:8) + 0x016D (LSB bits 7:0)
+x_output_size: 0x016C (MSB bits 11:8) + 0x016D (LSB bits 7:0)  
 y_output_size: 0x016E (MSB bits 11:8) + 0x016F (LSB bits 7:0) 
 
 
@@ -206,7 +206,25 @@ int imx219_set_crop(const struct sensor_def *sensor, struct mode_def *mode, cons
 .set_crop = imx219_set_crop,
 ```
 
-Capture no longer aborts, but the image is unclear and only 6 frames were saved in 1 second at requested 30 fps. Our working assumption is startup processing overhead masking the expected ROI driven gain, next we will prune heavy/unused processing paths and then re measure effective fps.
+Capture no longer aborted, but the image remained unclear and only 6 frames were saved in 1 s at a requested 30 fps. We attributed this to startup/preview plumbing that masked the expected ROI driven gain, so we pruned heavy/unused paths and, as part of that cleanup, made the scope explicit: raspiraw was capture only, emitting Bayer RAW10/RAW12 to disk, while playback/debayering ran post capture via a small Python/OpenCV script to the HDMI display.
+
+We reviewed the CLI command enum in raspiraw.c and pruned GUI/ YUV/ auxiliary controls that do not contribute to our raw high FPS IMX219 capture path, then intentionally left the parser references in place so the compiler would surface all dependent code for removal. The red block in the VS Code diff below shows the exact enum constants deleted:
+
+<img src="cli_prune_enum.png" width="500" alt="Pruned CLI enum in raspiraw.c (left: ours, right: original)"/>
+
+Each removed command was non essential for our architecture and would have kept unused threads, state, or I/O paths alive:
+
+1. CommandDecodeMetadata: "Decode register metadata" (from the documentation in the file), we store Bayer RAW only and avoid in capture metadata parsing to keep CPU/I/O overhead minimal.
+2. CommandAwb: "Use a simple grey-world AWB algorithm", AWB is a post demosaic operation, so we keep sensor native RAW untouched during capture.
+3. CommandNoPreview / CommandPreview: “Do not send the stream to the display” / “Preview window settings <'x,y,w,h'>”, both toggled MMAL preview setup. Our node ran headless, so preview init/teardown, window geometry parsing, and GPU buffers only expanded latency and error surfaces.
+4. CommandFullScreen: “Fullscreen preview mode”, another GUI refinement on the same preview path, unnecessary without a display.
+5. CommandOpacity: “Preview window opacity [0–255]”, a GUI only control that provided no value for headless capture.
+7. CommandProcessing: “Pass images into an image processing function”, it diverted frames into an in process pipeline, increasing queueing and cache traffic. We kept acquisition deterministic by isolating capture from processing.
+8. CommandProcessingYUV: “Pass processed YUV images into an image processing function”, it assumed a color converted path we did not produce and would have forced extra buffers and conditionals.
+9. CommandOutputYUV: “Set the output filename for YUV data”, our recorder persisted RAW10/RAW12 only to retain bit depth and the Bayer mosaic. A YUV sink implied real time convert/demosaic to 8-bit with chroma subsampling, adding CPU/I/O and destroying per photosite structure.
+
+This targeted enum pruning made all transitive references (switch cases, command tables, state fields) fail to compile by design, giving us a precise to do map for deleting dead code next while keeping only ROI/I2C/RAW essentials.
+
 
 ## System Testing Update ##
 
