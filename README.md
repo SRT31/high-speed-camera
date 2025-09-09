@@ -179,7 +179,7 @@ y_output_size: 0x016E (MSB bits 11:8) + 0x016F (LSB bits 7:0)
 
 
 *From imx219 datasheet*  
-<img src="regs_datasheet_imx219.png.png" width="500"/>  
+<img src="regs_datasheet_imx219.png" width="500"/>  
 
 We then added a lightweight imx219_set_crop(...) in imx219_modes.h that validates requested width / height against the current mode and writes 0x016C..0x016F. Finally, we connected the handler so raspiraw actually calls it:
 
